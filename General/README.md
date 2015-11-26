@@ -9,6 +9,6 @@ However note that the datatypes aren't always picked up quite right, in particul
 
 To get round this we have to modify the schema mapping to make FME create "text" rather than "varchar(n)" columns in postgres. This took some digging around as Safe's documentation on data type mappings is abysmal, but it turns out to be "fme_buffer".
 
-
+When loaded, indexes should be created on the database. The ipython notebook DHS_Database_Add_Indexes.ipynb provides some basic code that will do this on an SQLite format database. For postgres the code it generates can be extracted and modified easily (e.g. add the schema qualifier, change case), for running in PGAdmin.
 
 
