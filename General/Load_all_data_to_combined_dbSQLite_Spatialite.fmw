@@ -1,0 +1,1612 @@
+#! <?xml version="1.0" encoding="utf-8" ?>
+#! <WORKSPACE
+#    
+#    
+#    Command-line to run this workspace:
+#    
+#    
+#    "C:\Program Files\FME\fme.exe" C:\Users\zool1301\Documents\DHS\DataExtraction\General\Load_all_data_to_combined_dbSQLite_Spatialite.fmw
+#          --SourceDataset_SCHEMA_FROM_TABLE "C:\Users\zool1301\Documents\DHS\DataExtraction\General\AllSchemas_Flat_NoGeom.csv"
+#          --SourceDataset_PATH "G:\DataPrep\DHS_Tables"
+#          --DestDataset_SPATIALITE "C:\Users\zool1301\Documents\DHS\DataExtraction\General\All_DHS_Spatialite.db"
+#    
+#    
+#! TITLE=""
+#! DOC_TOP_LEFT="-101.997 -1560"
+#! FME_DOCUMENT_GUID="1c558e75-3179-4ffd-86d6-2bfb9fa57b50"
+#! FME_GEOMETRY_HANDLING="Enhanced"
+#! IGNORE_READER_FAILURE="No"
+#! END_TCL=""
+#! BEGIN_TCL=""
+#! REQUIREMENTS_KEYWORD=""
+#! LOG_MAX_RECORDED_FEATURES="200"
+#! FME_STROKE_MAX_DEVIATION="0"
+#! MULTI_WRITER_DATASET_ORDER="BY_ID"
+#! FME_REPROJECTION_ENGINE="FME"
+#! REDIRECT_TERMINATORS="NONE"
+#! PASSWORD=""
+#! FME_SERVER_SERVICES=""
+#! SHOW_ANNOTATIONS="true"
+#! DOC_EXTENTS="3393.03 1509"
+#! WARN_INVALID_XFORM_PARAM="Yes"
+#! FME_DOCUMENT_PRIORGUID="ac5eb1a2-32c1-4316-bbad-1554e42d0ec8,477ec6d6-b1a9-45de-8ec9-36f067161128,3e5fe761-040b-4fbf-be15-e18d82206cd5,ecf168c6-4b43-4a87-8a8b-983684da311e,520b29f0-ecb9-4678-a485-3d05da2a4f69,2a200349-6180-4967-85eb-acc79de85352,9d7437d9-5d29-4372-9295-8d029ad4944e,6430ac31-00e1-4243-8f62-c9cbd5a6a862,05c94429-5095-46cd-a699-984a52c16161,ddec67fe-0783-4803-8a70-300ce63375bf,55f4c17a-edc6-4944-ba68-cfd28ac91c89,49274de7-df91-4b48-92e0-cf5cdaa63433"
+#! USAGE=""
+#! SOURCE_ROUTING_FILE=""
+#! SOURCE="NONE"
+#! LOG_MAX_PRECISION="Yes"
+#! WORKSPACE_VERSION="1"
+#! DESTINATION_ROUTING_FILE=""
+#! REQUIREMENTS=""
+#! ATTR_TYPE_ENCODING="SDF"
+#! FME_BUILD_NUM="15570"
+#! FME_IMPLICIT_CSMAP_REPROJECTION_MODE="Auto"
+#! MAX_LOG_FEATURES="200"
+#! LAST_SAVE_BUILD="FME(R) 2015.1.3.0 (20151105 - Build 15570 - WIN64)"
+#! END_PYTHON=""
+#! VIEW_POSITION="-255.003 -30.0003"
+#! LEGAL_TERMS_CONDITIONS=""
+#! BEGIN_PYTHON=""
+#! DESTINATION="NONE"
+#! LOG_FILE=""
+#! CATEGORY=""
+#! ZOOM_SCALE="100"
+#! SHOW_INFO_NODES="true"
+#! DESCRIPTION=""
+#! HISTORY=""
+#! LAST_SAVE_DATE="2015-11-20T11:36:39"
+#! >
+#! <DATASETS>
+#! <DATASET
+#! IS_SOURCE="true"
+#! ROLE="SCHEMA_READER"
+#! FORMAT="SCHEMA_FROM_TABLE"
+#! DATASET="$(SourceDataset_SCHEMA_FROM_TABLE)"
+#! KEYWORD="SCHEMA_FROM_TABLE_1"
+#! MULTI_GEOM_ALLOWED="false"
+#! ATTR_MAX_LENGTH="60"
+#! ATTR_CASE="ANY"
+#! ALLOWED_FEAT_TYPES=""
+#! WRITE_DEFS="false"
+#! DEFLINE_TEMPLATE="fme_type {FME_GEN_GEOMETRY}"
+#! DEFLINE_ATTRS="false"
+#! EXPOSABLE_ATTRS="fme_format_short_name varchar(200) fme_format_long_name varchar(200) fme_primary_axis real64 fme_basename char(50) fme_geometry{} varchar(200) fme_geometry fme_char(50) fme_text_string char(50) fme_dataset char(50) fme_feature_type char(50) fme_text_size real64 multi_reader_keyword char(50) fme_type char(50) multi_reader_type char(50) multi_reader_id int32 fme_rotation real64 fme_start_angle real64 attribute{}.name varchar(200) attribute{}.fme_data_type varchar(200) fme_coordinate_system varchar(200) fme_secondary_axis real64 attribute{}.native_data_type varchar(200) fme_color char(50) multi_reader_full_id int32 fme_sweep_angle real64 fme_fill_color char(50)"
+#! DEFLINE_PARMS=""
+#! ATTR_INDEX_TYPES=""
+#! ATTR_NAME_INVALID_CHARS=""
+#! SUPPORTS_FEATURE_TYPE_FANOUT="true"
+#! ENABLED="true"
+#! DYNAMIC_FEATURE_TYPES_LIST_ON_MERGE="true"
+#! DATASET_TYPE="FILEURLDIR"
+#! GENERATE_FME_BUILD_NUM="15570"
+#! COORDSYS=""
+#! FEATURE_TYPES=""
+#! START_FEATURE=""
+#! MIN_FEATURES=""
+#! MAX_FEATURES_PER_FEATURE_TYPE=""
+#! MAX_FEATURES=""
+#! >
+#! <METAFILE_PARAMETER
+#! NAME="READER_AUTO_EXPOSE"
+#! VALUE="attribute{}.name varchar(200) attribute{}.fme_data_type varchar(200) attribute{}.native_data_type varchar(200) fme_format_long_name varchar(200) fme_format_short_name varchar(200) fme_basename char(50)"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="READER_DATASET_HINT"
+#! VALUE="Select the Schema Table Dataset"
+#! />
+#! </DATASET>
+#! <DATASET
+#! IS_SOURCE="true"
+#! ROLE="READER"
+#! FORMAT="PATH"
+#! DATASET="$(SourceDataset_PATH)"
+#! KEYWORD="PATH_1"
+#! MULTI_GEOM_ALLOWED="false"
+#! ATTR_MAX_LENGTH="60"
+#! ATTR_CASE="ANY"
+#! ALLOWED_FEAT_TYPES=""
+#! WRITE_DEFS="false"
+#! DEFLINE_TEMPLATE=""
+#! DEFLINE_ATTRS="false"
+#! EXPOSABLE_ATTRS="fme_primary_axis number(31,15) fme_basename char(50) fme_geometry fme_char(50) path_geom char(13) fme_text_string char(50) fme_dataset char(50) fme_feature_type char(50) fme_text_size number(31,15) multi_reader_keyword char(50) fme_type char(50) multi_reader_type char(50) multi_reader_id number(11,0) fme_rotation number(31,15) fme_start_angle number(31,15) fme_secondary_axis number(31,15) fme_color char(50) multi_reader_full_id number(11,0) fme_fill_color char(50) fme_sweep_angle number(31,15)"
+#! DEFLINE_PARMS=""
+#! ATTR_INDEX_TYPES=""
+#! ATTR_NAME_INVALID_CHARS=""
+#! SUPPORTS_FEATURE_TYPE_FANOUT="true"
+#! ENABLED="true"
+#! DYNAMIC_FEATURE_TYPES_LIST_ON_MERGE="true"
+#! DATASET_TYPE="DIRONLY"
+#! GENERATE_FME_BUILD_NUM="15570"
+#! COORDSYS=""
+#! FEATURE_TYPES=""
+#! START_FEATURE=""
+#! MIN_FEATURES=""
+#! MAX_FEATURES_PER_FEATURE_TYPE=""
+#! MAX_FEATURES=""
+#! >
+#! <METAFILE_PARAMETER
+#! NAME="FEATURE_TYPE_NAME"
+#! VALUE="PATH"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="READER_DATASET_HINT"
+#! VALUE="Specify the Folder or Files pathnames"
+#! />
+#! </DATASET>
+#! <DATASET
+#! IS_SOURCE="false"
+#! ROLE="WRITER"
+#! FORMAT="SPATIALITE"
+#! DATASET="$(DestDataset_SPATIALITE)"
+#! KEYWORD="SPATIALITE_1"
+#! MULTI_GEOM_ALLOWED="true"
+#! ATTR_MAX_LENGTH="256"
+#! ATTR_CASE="LOWER"
+#! ALLOWED_FEAT_TYPES=""
+#! WRITE_DEFS="true"
+#! DEFLINE_TEMPLATE="spatialite_type wkb_geometry spatialite_overwrite_tables No spatialite_create_spatial_index Yes spatialite_compress_geometry Yes"
+#! DEFLINE_ATTRS="true"
+#! EXPOSABLE_ATTRS="fme_secondary_axis real(31,15) fme_geometry fme_char(50) fme_rotation real(31,15) fme_primary_axis real(31,15) fme_feature_type string(50) fme_text_string string(50) fme_fill_color string(50) fme_start_angle real(31,15) spatialite_type string(255) fme_sweep_angle real(31,15) fme_color string(50) fme_type string(50) fme_basename string(50) fme_dataset string(50) fme_text_size real(31,15)"
+#! DEFLINE_PARMS="&quot;GUI CHOICE spatialite_overwrite_tables Yes%No Drop Existing Table&quot; No &quot;GUI CHOICE spatialite_compress_geometry Yes%No Compress Geometry&quot; Yes &quot;GUI CHOICE spatialite_create_spatial_index Yes%No Create Spatial Index&quot; Yes "
+#! ATTR_INDEX_TYPES=""
+#! ATTR_NAME_INVALID_CHARS="\\/&quot;:?*&lt;&gt;|[# &apos;&amp;+-{}]."
+#! SUPPORTS_FEATURE_TYPE_FANOUT="true"
+#! ENABLED="true"
+#! DYNAMIC_FEATURE_TYPES_LIST_ON_MERGE="true"
+#! DATASET_TYPE="FILE"
+#! GENERATE_FME_BUILD_NUM="15570"
+#! COORDSYS=""
+#! FANOUT_ID_ATTR=""
+#! FANOUT="No"
+#! FANOUT_SUFFIX=""
+#! FANOUT_DIRECTORY=""
+#! FANOUT_PREFIX=""
+#! >
+#! <METAFILE_PARAMETER
+#! NAME="WRITER_DATASET_HINT"
+#! VALUE="Specify a name for the SpatiaLite file"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="FEATURE_TYPE_NAME"
+#! VALUE="Table"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="DATASET_NAME"
+#! VALUE="sl3 file"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="FEATURE_TYPE_DEFAULT_NAME"
+#! VALUE="Table1"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="ADVANCED_PARMS"
+#! VALUE="SPATIALITE_OUT_ENCODING TRANSACTION_SIZE"
+#! />
+#! <METAFILE_PARAMETER
+#! NAME="READER_DATASET_HINT"
+#! VALUE="Select the SpatiaLite file(s)"
+#! />
+#! </DATASET>
+#! </DATASETS>
+#! <DATA_TYPES>
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="char(width)"
+#! FME_TYPE="fme_varchar(width)"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="char(width)"
+#! FME_TYPE="fme_char(width)"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="buffer"
+#! FME_TYPE="fme_buffer"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="char(20)"
+#! FME_TYPE="fme_datetime"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="char(12)"
+#! FME_TYPE="fme_time"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="char(1)"
+#! FME_TYPE="fme_char(width)"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="date"
+#! FME_TYPE="fme_date"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(31,15)"
+#! FME_TYPE="fme_real64"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(15,7)"
+#! FME_TYPE="fme_real32"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(11,0)"
+#! FME_TYPE="fme_int32"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(11,0)"
+#! FME_TYPE="fme_uint32"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(20,0)"
+#! FME_TYPE="fme_int64"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(20,0)"
+#! FME_TYPE="fme_uint64"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="logical"
+#! FME_TYPE="fme_boolean"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(6,0)"
+#! FME_TYPE="fme_int16"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(6,0)"
+#! FME_TYPE="fme_uint16"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(4,0)"
+#! FME_TYPE="fme_uint8"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="number(width,decimal)"
+#! FME_TYPE="fme_decimal(width,decimal)"
+#! FORMAT="PATH"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="string(width)"
+#! FME_TYPE="fme_varchar(width)"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="string(width)"
+#! FME_TYPE="fme_char(width)"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="string(255)"
+#! FME_TYPE="fme_buffer"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="binary"
+#! FME_TYPE="fme_buffer"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="string(1)"
+#! FME_TYPE="fme_char(width)"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real(width,decimal)"
+#! FME_TYPE="fme_decimal(width,decimal)"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="datetime"
+#! FME_TYPE="fme_datetime"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="date"
+#! FME_TYPE="fme_date"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="time"
+#! FME_TYPE="fme_time"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="integer"
+#! FME_TYPE="fme_int32"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real(20,0)"
+#! FME_TYPE="fme_int64"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real(20,0)"
+#! FME_TYPE="fme_uint64"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="integer"
+#! FME_TYPE="fme_int16"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="integer"
+#! FME_TYPE="fme_uint16"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="integer"
+#! FME_TYPE="fme_uint8"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real(15,7)"
+#! FME_TYPE="fme_real32"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real(31,15)"
+#! FME_TYPE="fme_real64"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real(10,0)"
+#! FME_TYPE="fme_uint32"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="integer"
+#! FME_TYPE="fme_boolean"
+#! FORMAT="SPATIALITE"
+#! />
+#! <DATA_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="real64"
+#! FME_TYPE="fme_real64"
+#! FORMAT="SPATIALITE"
+#! />
+#! </DATA_TYPES>
+#! <GEOM_TYPES>
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_no_geom"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_point"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_line"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_area"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_text"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_ellipse"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_arc"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_rectangle"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_rounded_rectangle"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_collection"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_raster"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_surface"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_solid"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="true"
+#! FORMAT_TYPE="path_none"
+#! FME_TYPE="fme_point_cloud"
+#! FORMAT="PATH"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_multi_point_xyz"
+#! FME_TYPE="fme_point"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_multi_point"
+#! FME_TYPE="fme_point"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_point_xyz"
+#! FME_TYPE="fme_point"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_point"
+#! FME_TYPE="fme_point"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_point_xyz"
+#! FME_TYPE="fme_text"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_multi_line_xyz"
+#! FME_TYPE="fme_line"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_multi_line"
+#! FME_TYPE="fme_line"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_line_xyz"
+#! FME_TYPE="fme_line"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_line"
+#! FME_TYPE="fme_line"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_line_xyz"
+#! FME_TYPE="fme_arc"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_line_xyz"
+#! FME_TYPE="fme_solid"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_line_xyz"
+#! FME_TYPE="fme_surface"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_multi_polygon_xyz"
+#! FME_TYPE="fme_area"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_multi_polygon"
+#! FME_TYPE="fme_area"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon_xyz"
+#! FME_TYPE="fme_area"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon"
+#! FME_TYPE="fme_area"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon_xyz"
+#! FME_TYPE="fme_ellipse"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon_xyz"
+#! FME_TYPE="fme_rectangle"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon_xyz"
+#! FME_TYPE="fme_rounded_rectangle"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon_xyz"
+#! FME_TYPE="fme_raster"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_polygon_xyz"
+#! FME_TYPE="fme_point_cloud"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_geometry_collection_xyz"
+#! FME_TYPE="fme_collection"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_geometry_collection"
+#! FME_TYPE="fme_collection"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_geometry"
+#! FME_TYPE="fme_no_geom"
+#! FORMAT="SPATIALITE"
+#! />
+#! <GEOM_TYPE
+#! IS_SOURCE="false"
+#! FORMAT_TYPE="wkb_none"
+#! FME_TYPE="fme_no_geom"
+#! FORMAT="SPATIALITE"
+#! />
+#! </GEOM_TYPES>
+#! <FEATURE_TYPES>
+#! <FEATURE_TYPE
+#! IS_SOURCE="true"
+#! NODE_NAME="PATH"
+#! FEATURE_TYPE_NAME=""
+#! FEATURE_TYPE_NAME_QUALIFIER=""
+#! IS_EDITABLE="false"
+#! IDENTIFIER="21"
+#! FEAT_GEOMTYPE="path_none"
+#! POSITION="807.004 -51.0005"
+#! BOUNDING_RECT="807.004 -51.0005 -1 -1"
+#! ORDER="5e+014"
+#! COLLAPSED="true"
+#! KEYWORD="PATH_1"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! HIDDEN_USER_ATTRS=""
+#! MERGE_FILTER=""
+#! MERGE_FILTER_TYPE="FILTER_TYPE_GLOB"
+#! MERGE_FILTER_CASE_SENSITIVE="true"
+#! DYNAMIC_SCHEMA="false"
+#! >
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_unix" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_windows" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_rootname" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_filename" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_extension" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_filesize" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_ownername" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_readonly" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_modified_date" ATTR_TYPE="date" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_created_date" ATTR_TYPE="date" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_accessed_date" ATTR_TYPE="date" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_directory_unix" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_directory_windows" ATTR_TYPE="buffer" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! <FEAT_ATTRIBUTE ATTR_NAME="path_type" ATTR_TYPE="char(10)" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#! </FEATURE_TYPE>
+#! <FEATURE_TYPE
+#! IS_SOURCE="false"
+#! NODE_NAME="table1"
+#! FEATURE_TYPE_NAME="@Value(tablename)"
+#! FEATURE_TYPE_NAME_QUALIFIER=""
+#! IS_EDITABLE="true"
+#! IDENTIFIER="32"
+#! FEAT_GEOMTYPE="All"
+#! POSITION="2640 -1200"
+#! BOUNDING_RECT="2640 -1200 -1 -1"
+#! ORDER="5e+014"
+#! COLLAPSED="true"
+#! KEYWORD="SPATIALITE_1"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! SCHEMA_ATTRIBUTE_SOURCE="2"
+#! DYNAMIC_SCHEMA="true"
+#! DYNAMIC_SCHEMA_SOURCES="SCHEMA_FROM_TABLE_1"
+#! DYNAMIC_SCHEMA_FEATURE_TYPE="FROM_ATTRIBUTE"
+#! DYNAMIC_SCHEMA_FEATURE_TYPE_NAME="@Value(tablename)"
+#! DYNAMIC_SCHEMA_DEFINITION="FROM_ATTRIBUTE"
+#! DYNAMIC_SCHEMA_DEFINITION_NAME="@Value(tablename)"
+#! DYNAMIC_SCHEMA_GEOMETRY="FIXED"
+#! DYNAMIC_SCHEMA_GEOMETRY_NAME="&lt;Unused&gt;"
+#! DYNAMIC_SCHEMA_ATTRIBUTES_TO_REMOVE=""
+#! >
+#! <DEFLINE_PARM PARM_NAME="spatialite_create_spatial_index" PARM_VALUE="No"/>
+#! <DEFLINE_PARM PARM_NAME="spatialite_overwrite_tables" PARM_VALUE="No"/>
+#! <DEFLINE_PARM PARM_NAME="spatialite_compress_geometry" PARM_VALUE="Yes"/>
+#! </FEATURE_TYPE>
+#! </FEATURE_TYPES>
+#! <FMESERVER>
+#! </FMESERVER>
+#! <GLOBAL_PARAMETERS>
+#! <GLOBAL_PARAMETER
+#! GUI_LINE="GUI FILE_OR_URL SourceDataset_SCHEMA_FROM_TABLE All_files|* Source Dataset:"
+#! DEFAULT_VALUE="$(FME_MF_DIR)AllSchemas_Flat_NoGeom.csv"
+#! IS_STAND_ALONE="false"
+#! />
+#! <GLOBAL_PARAMETER
+#! GUI_LINE="GUI MULTIDIR SourceDataset_PATH Source Folder and File Pathnames Folder:"
+#! DEFAULT_VALUE="G:\DataPrep\DHS_Tables"
+#! IS_STAND_ALONE="false"
+#! />
+#! <GLOBAL_PARAMETER
+#! GUI_LINE="GUI FILENAME DestDataset_SPATIALITE SpatiaLite_Database_Files(*.sl3;*.db;*.sqlite)|*.sl3;*.db;*.sqlite|SpatiaLite_Database_Files(*.sl3)|*.sl3|SpatiaLite_Database_Files(*.db)|*.db|SpatiaLite_Database_Files(*.sqlite)|*.sqlite|All_files(*)|* Destination SpatiaLite Database File:"
+#! DEFAULT_VALUE="$(FME_MF_DIR)All_DHS_Spatialite.db"
+#! IS_STAND_ALONE="false"
+#! />
+#! </GLOBAL_PARAMETERS>
+#! <COMMENTS>
+#! <COMMENT
+#! IDENTIFIER="20"
+#! COMMENT_VALUE="&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&#10;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;&#10;p, li { white-space: pre-wrap; }&#10;&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Don&apos;t load data from the country-specific tables as these have vast numbers of columns due to their being different in each survey.&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(e.g. REC91 would have 14007 columns!!)&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If we want to do anything with those data we&apos;d have to restructure for storage in a single attr name / value table?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
+#! POSITION="1275 -600"
+#! TOP_LEFT="1275 -600"
+#! BOTTOM_RIGHT="1274 -599"
+#! BOUNDING_RECT="1275 -600 -1 -1"
+#! ORDER="5e+014"
+#! FOLLOW_ANCHOR="true"
+#! INFO_NODE="false"
+#! COLOUR="1,1,0.784314,0.192157"
+#! SIZE_POLICY="8"
+#! COMMENT_TYPE="REGULAR"
+#! ANCHORED_NODE="17"
+#! />
+#! <COMMENT
+#! IDENTIFIER="19"
+#! COMMENT_VALUE="&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&#10;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;&#10;p, li { white-space: pre-wrap; }&#10;&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This workbench loads ALL DHS survey data from the CSV files (a file for every table of every survey) to a database with one table per overall table / recordtype, each containing data from all the surveys.&lt;/p&gt;&#10;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The schema of these DB tables has been calculated in advance to contain the union of all the surveys&apos; columns for that record type (because for a given table, not all surveys contain all the columns). The schema definitions are read in using a workspace resource from a CSV file.&lt;/p&gt;&#10;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Note that we don&apos;t do anything in this loader about creating indexes. We&apos;ll have to do that in code later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
+#! POSITION="-101.997 -56.0008"
+#! TOP_LEFT="-101.997 -56.0008"
+#! BOTTOM_RIGHT="648.003 -106.001"
+#! BOUNDING_RECT="-101.997 -56.0008 750 50"
+#! ORDER="5e+014"
+#! FOLLOW_ANCHOR="true"
+#! INFO_NODE="false"
+#! COLOUR="1,1,0.784314,0.192157"
+#! SIZE_POLICY="10"
+#! COMMENT_TYPE="REGULAR"
+#! ANCHORED_NODE="0"
+#! />
+#! <COMMENT
+#! IDENTIFIER="29"
+#! COMMENT_VALUE="&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&#10;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;&#10;p, li { white-space: pre-wrap; }&#10;&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Read the csv file. We don&apos;t know here the attributes it will have so they don&apos;t show here (and if they did there would be many thousand of them) but the dynamic writer will know what it is looking for.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
+#! POSITION="1584 -839.999"
+#! TOP_LEFT="1584 -839.999"
+#! BOTTOM_RIGHT="2123.52 -1011"
+#! BOUNDING_RECT="1584 -839.999 539.519 171.001"
+#! ORDER="5e+014"
+#! FOLLOW_ANCHOR="true"
+#! INFO_NODE="false"
+#! COLOUR="1,1,0.784314,0.192157"
+#! SIZE_POLICY="10"
+#! COMMENT_TYPE="REGULAR"
+#! ANCHORED_NODE="25"
+#! />
+#! <COMMENT
+#! IDENTIFIER="31"
+#! COMMENT_VALUE="&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&#10;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;&#10;p, li { white-space: pre-wrap; }&#10;&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Load to the database using schemas that have been pre-created by a separate workbench. The schema definitions are loaded to this WB from a CSV file which has been added as a workspace resource.&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This ensures that each recordtype table is created using all the columns that are found in that recordtype for ANY survey&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
+#! POSITION="2535 -320.499"
+#! TOP_LEFT="2535 -320.499"
+#! BOTTOM_RIGHT="3291.03 -491.5"
+#! BOUNDING_RECT="2535 -320.499 756.032 171.001"
+#! ORDER="5e+014"
+#! FOLLOW_ANCHOR="true"
+#! INFO_NODE="false"
+#! COLOUR="1,1,0.784314,0.192157"
+#! SIZE_POLICY="10"
+#! COMMENT_TYPE="REGULAR"
+#! ANCHORED_NODE="32"
+#! />
+#! <COMMENT
+#! IDENTIFIER="34"
+#! COMMENT_VALUE="&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&#10;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;&#10;p, li { white-space: pre-wrap; }&#10;&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;As we&apos;re reading from CSVs we have blank strings rather than proper nulls, so convert those&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"
+#! POSITION="1972.51 -1350"
+#! TOP_LEFT="1972.51 -1350"
+#! BOTTOM_RIGHT="2449.53 -1560"
+#! BOUNDING_RECT="1972.51 -1350 477.024 210.002"
+#! ORDER="5e+014"
+#! FOLLOW_ANCHOR="true"
+#! INFO_NODE="false"
+#! COLOUR="1,1,0.784314,0.192157"
+#! SIZE_POLICY="10"
+#! COMMENT_TYPE="REGULAR"
+#! ANCHORED_NODE="33"
+#! />
+#! </COMMENTS>
+#! <CONSTANTS>
+#! </CONSTANTS>
+#! <BOOKMARKS>
+#! </BOOKMARKS>
+#! <TRANSFORMERS>
+#! <TRANSFORMER
+#! IDENTIFIER="6"
+#! TYPE="ListIndexer"
+#! VERSION="2"
+#! POSITION="814.009 -360.505"
+#! BOUNDING_RECT="814.009 -360.505 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="false"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID_" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="PREFIX" PARM_VALUE="SurveyID"/>
+#! <XFORM_PARM PARM_NAME="INDEX" PARM_VALUE="0"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="LIST_ATTR" PARM_VALUE="_{}"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="ListIndexer"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="7"
+#! TYPE="ListIndexer"
+#! VERSION="2"
+#! POSITION="817.009 -516.505"
+#! BOUNDING_RECT="817.009 -516.505 430 71"
+#! ORDER="5e+014"
+#! PARMS_EDITED="false"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID_" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="RecordName_" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="PREFIX" PARM_VALUE="RecordName"/>
+#! <XFORM_PARM PARM_NAME="INDEX" PARM_VALUE="2"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="LIST_ATTR" PARM_VALUE="_{}"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="ListIndexer_2"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="15"
+#! TYPE="AttributeRenamer"
+#! VERSION="3"
+#! POSITION="813.001 -657.506"
+#! BOUNDING_RECT="813.001 -657.506 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="AttributeRenamer"/>
+#! <XFORM_PARM PARM_NAME="ATTR_LIST" PARM_VALUE="RecordName_,tablename,,SurveyID_,SurveyID,"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="17"
+#! TYPE="Tester"
+#! VERSION="2"
+#! POSITION="832.499 -848.999"
+#! BOUNDING_RECT="832.499 -848.999 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="PASSED"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <OUTPUT_FEAT NAME="FAILED"/>
+#! <FEAT_COLLAPSED COLLAPSED="1"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_PARM PARM_NAME="BOOL_OP" PARM_VALUE="AND"/>
+#! <XFORM_PARM PARM_NAME="TEST_MODE" PARM_VALUE="Automatic"/>
+#! <XFORM_PARM PARM_NAME="TEST_DESCRIPTION" PARM_VALUE="&quot;&quot;"/>
+#! <XFORM_PARM PARM_NAME="COMPOSITE_TEST" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="TEST_LIST" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="TEST_CLAUSE" PARM_VALUE="TEST &lt;at&gt;Value&lt;openparen&gt;tablename&lt;closeparen&gt; NOT_IN REC91&lt;comma&gt;REC95&lt;comma&gt;RECH3&lt;comma&gt;REC94&lt;comma&gt;REC97&lt;comma&gt;REC98&lt;comma&gt;RECH4&lt;comma&gt;RECH8&lt;comma&gt;REC99&lt;comma&gt;RECH7&lt;comma&gt;RECHG2"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="Tester"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="22"
+#! TYPE="StringSearcher"
+#! VERSION="2"
+#! POSITION="825.004 -150"
+#! BOUNDING_RECT="825.004 -150 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="MATCHED"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <OUTPUT_FEAT NAME="NOT_MATCHED"/>
+#! <FEAT_COLLAPSED COLLAPSED="1"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_PARM PARM_NAME="REGEXP" PARM_VALUE="^&lt;openparen&gt;&lt;backslash&gt;d+&lt;closeparen&gt;&lt;backslash&gt;.&lt;openparen&gt;&lt;backslash&gt;w+&lt;closeparen&gt;&lt;backslash&gt;.&lt;openparen&gt;.+&lt;closeparen&gt;&lt;dollar&gt;"/>
+#! <XFORM_PARM PARM_NAME="MATCHED_RESULT_ATTR" PARM_VALUE="_matched_characters"/>
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CASE" PARM_VALUE="no"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="STRING_TO_SEARCH" PARM_VALUE="&lt;at&gt;Value&lt;openparen&gt;path_rootname&lt;closeparen&gt;"/>
+#! <XFORM_PARM PARM_NAME="MATCHED_PARTS_ATTR" PARM_VALUE="_"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="StringSearcher_2"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="25"
+#! TYPE="FeatureReader"
+#! VERSION="7"
+#! POSITION="1407.5 -1188"
+#! BOUNDING_RECT="1407.5 -1188 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="&lt;SCHEMA&gt;"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="fme_feature_type_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="attribute{}.name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="attribute{}.fme_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="attribute{}.native_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="fme_format_short_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="fme_format_long_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <OUTPUT_FEAT NAME="&lt;OTHER&gt;"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#! <OUTPUT_FEAT NAME="INITIATOR"/>
+#! <FEAT_COLLAPSED COLLAPSED="2"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <XFORM_ATTR ATTR_NAME="_matched_records" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#! <OUTPUT_FEAT NAME="&lt;REJECTED&gt;"/>
+#! <FEAT_COLLAPSED COLLAPSED="3"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_ATTR ATTR_NAME="_reader_error" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#! <XFORM_PARM PARM_NAME="FORMAT_PARAMS" PARM_VALUE="CSV_SCAN_MAX_FEATURES,&quot;OPTIONAL TEXT&quot;,CSV&lt;space&gt;Maximum&lt;space&gt;Lines&lt;space&gt;to&lt;space&gt;Scan&lt;space&gt;&lt;openparen&gt;0&lt;space&gt;for&lt;space&gt;no&lt;space&gt;limit&lt;closeparen&gt;:,CSV_groupBox,&quot;OPTIONAL DISCLOSUREGROUP _SKIP_LINES%_SKIP_FOOTER&quot;,CSV&lt;space&gt;Lines&lt;space&gt;to&lt;space&gt;Skip,CSV__FIELD_NAMES_AFTER_HEADER,&quot;OPTIONAL CHECKBOX yes%no&quot;,CSV&lt;space&gt;Field&lt;space&gt;Names&lt;space&gt;Follow&lt;space&gt;Header,CSV__FILTER_TABLE_CONFIG,&quot;OPTIONAL TEXT&quot;,CSV&lt;space&gt;FilterTable,CSV_FILTER_GROUP,&quot;OPTIONAL ACTIVEDISCLOSUREGROUP _FILTER_PARAMS&quot;,CSV&lt;space&gt;Filter&lt;space&gt;by&lt;space&gt;Field&lt;space&gt;Value,CSV__SKIP_LINES,&quot;OPTIONAL RANGE_SLIDER 0%MAX%0&quot;,CSV&lt;space&gt;Header:,CSV__SCHEMA,&quot;OPTIONAL TEXT&quot;,CSV&lt;space&gt;Schema,CSV__ALLOW_SPACES_IN_COLUMN_NAMES,&quot;IGNORE TEXT&quot;,CSV&lt;space&gt;,CSV__ENCODING,&quot;OPTIONAL STRING_OR_ENCODING SYSTEM%*&quot;,CSV&lt;space&gt;Character&lt;space&gt;Encoding:,CSV__SCHEMA_WITH_COL_NAMES,&quot;OPTIONAL TEXT&quot;,CSV&lt;space&gt;Schema&lt;space&gt;with&lt;space&gt;column&lt;space&gt;names,CSV_groupBox_2,&quot;OPTIONAL DISCLOSUREGROUP FME_DISCLOSURE_OPEN%_IN_SEPARATOR%_DUPLICATE_DELIMS%_STRIP_QUOTES&quot;,CSV&lt;space&gt;Field&lt;space&gt;Separation,CSV__SKIP_FOOTER,&quot;OPTIONAL INTEGER&quot;,CSV&lt;space&gt;Footer:,CSV__IN_FIELD_NAMES,&quot;OPTIONAL ACTIVEDISCLOSUREGROUP _FIELD_NAMES_AFTER_HEADER&quot;,CSV&lt;space&gt;File&lt;space&gt;Has&lt;space&gt;Field&lt;space&gt;Names,CSV_groupBox_4,&quot;OPTIONAL DISCLOSUREGROUP FME_DISCLOSURE_OPEN%_GROUP_BY_DATASET&quot;,CSV&lt;space&gt;Dataset&lt;space&gt;Parameters,CSV__DUPLICATE_DELIMS,&quot;OPTIONAL CHECKBOX yes%no&quot;,CSV&lt;space&gt;Remove&lt;space&gt;Duplicate&lt;space&gt;Separators,CSV_groupBox_5,&quot;OPTIONAL DISCLOSUREGROUP SCAN_MAX_FEATURES&quot;,CSV&lt;space&gt;Schema&lt;space&gt;Generation,CSV_groupBox_6,&quot;OPTIONAL DISCLOSUREGROUP _ENCODING&quot;,CSV&lt;space&gt;Encoding,CSV__STRIP_QUOTES,&quot;OPTIONAL CHECKBOX yes%no&quot;,CSV&lt;space&gt;Strip&lt;space&gt;Quotes,CSV__SORT_TABLE_CONFIG,&quot;OPTIONAL TEXT&quot;,CSV&lt;space&gt;SortTable,CSV__GROUP_BY_DATASET,&quot;OPTIONAL LOOKUP_CHOICE &quot;&quot;Feature Type from Format Name,no&quot;&quot;%&quot;&quot;Feature Type from File Name(s),yes&quot;&quot;&quot;,CSV&lt;space&gt;Feature&lt;space&gt;Type&lt;space&gt;Name&lt;openparen&gt;s&lt;closeparen&gt;:,CSV__IN_SEPARATOR,&quot;OPTIONAL STRING_OR_CHOICE ,%;%|%space%tab&quot;,CSV&lt;space&gt;Separator&lt;space&gt;Character:,CSV_SORT_GROUP,&quot;OPTIONAL ACTIVEDISCLOSUREGROUP _SORT_PARAMS&quot;,CSV&lt;space&gt;Sort"/>
+#! <XFORM_PARM PARM_NAME="CSV_groupBox_2" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="PORTS_FROM_FTTR" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="ATTRIBUTES" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="SELECTED_PORTS" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="COMBINE_GEOM" PARM_VALUE="Use Result"/>
+#! <XFORM_PARM PARM_NAME="CSV__ALLOW_SPACES_IN_COLUMN_NAMES" PARM_VALUE="yes"/>
+#! <XFORM_PARM PARM_NAME="CSV_groupBox_4" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV_groupBox_5" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV_groupBox_6" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV_FILTER_GROUP" PARM_VALUE="NO"/>
+#! <XFORM_PARM PARM_NAME="ATTR_ACCUM_MODE" PARM_VALUE="Merge Initiator and Result"/>
+#! <XFORM_PARM PARM_NAME="CSV_groupBox" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CACHE_TIMEOUT_HRS" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__IN_SEPARATOR" PARM_VALUE=","/>
+#! <XFORM_PARM PARM_NAME="CSV__SKIP_LINES" PARM_VALUE="1"/>
+#! <XFORM_PARM PARM_NAME="FORMAT" PARM_VALUE="CSV"/>
+#! <XFORM_PARM PARM_NAME="OUTPUT_PORTS_MODE" PARM_VALUE="SINGLE_PORT"/>
+#! <XFORM_PARM PARM_NAME="FEATURETYPES_RADIO" PARM_VALUE="FEATURETYPES"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__IN_FIELD_NAMES" PARM_VALUE="YES"/>
+#! <XFORM_PARM PARM_NAME="CSV__GROUP_BY_DATASET" PARM_VALUE="no"/>
+#! <XFORM_PARM PARM_NAME="OUTPUTPORTS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__ENCODING" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__FILTER_TABLE_CONFIG" PARM_VALUE="&quot;NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:;%COL_DELIM:,%HAS_DEFAULTS%START_NUM_ROWS:3%\&quot;Field Name\&quot;%\&quot;STRING_OR_CHOICE_ENCODED ATTRIBUTES %\&quot;%%\&quot;Filter\&quot;%\&quot;STRING_ENCODED _FILTER_REGEX \&quot;%%\&quot;Invert Filter\&quot;%\&quot;CHECKBOX _FILTER_UNMATCHED yes%no\&quot;%no&quot;"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="FeatureReader"/>
+#! <XFORM_PARM PARM_NAME="ADVANCED_GROUP" PARM_VALUE="FME_DISCLOSURE_OPEN"/>
+#! <XFORM_PARM PARM_NAME="ATTR_CONFLICT_RES" PARM_VALUE="Use Result"/>
+#! <XFORM_PARM PARM_NAME="FORMAT_DIRECTIVES" PARM_VALUE="META_MACROS,SourceSCAN_MAX_FEATURES&lt;comma&gt;1000&lt;comma&gt;SourcegroupBox&lt;comma&gt;&lt;comma&gt;Source_FIELD_NAMES_AFTER_HEADER&lt;comma&gt;no&lt;comma&gt;Source_FILTER_TABLE_CONFIG&lt;comma&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:&lt;semicolon&gt;%COL_DELIM:&lt;comma&gt;%HAS_DEFAULTS%START_NUM_ROWS:3%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;Field&lt;space&gt;Name&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;STRING_OR_CHOICE_ENCODED&lt;space&gt;ATTRIBUTES&lt;space&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;Filter&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;STRING_ENCODED&lt;space&gt;_FILTER_REGEX&lt;space&gt;&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;Invert&lt;space&gt;Filter&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;CHECKBOX&lt;space&gt;_FILTER_UNMATCHED&lt;space&gt;yes%no&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%no&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;comma&gt;SourceFILTER_GROUP&lt;comma&gt;NO&lt;comma&gt;Source_SKIP_LINES&lt;comma&gt;1&lt;comma&gt;Source_SCHEMA&lt;comma&gt;&lt;quote&gt;char&lt;comma&gt;12&lt;comma&gt;&lt;comma&gt;char&lt;comma&gt;6&lt;comma&gt;&lt;comma&gt;char&lt;comma&gt;17&lt;comma&gt;&lt;quote&gt;&lt;comma&gt;Source_ALLOW_SPACES_IN_COLUMN_NAMES&lt;comma&gt;yes&lt;comma&gt;Source_ENCODING&lt;comma&gt;&lt;comma&gt;Source_SCHEMA_WITH_COL_NAMES&lt;comma&gt;&lt;quote&gt;name&lt;comma&gt;char&lt;comma&gt;12&lt;comma&gt;&lt;comma&gt;RecordName&lt;comma&gt;char&lt;comma&gt;6&lt;comma&gt;&lt;comma&gt;coltype&lt;comma&gt;char&lt;comma&gt;17&lt;comma&gt;&lt;quote&gt;&lt;comma&gt;SourcegroupBox_2&lt;comma&gt;&lt;comma&gt;Source_SKIP_FOOTER&lt;comma&gt;0&lt;comma&gt;Source_IN_FIELD_NAMES&lt;comma&gt;YES&lt;comma&gt;SourcegroupBox_4&lt;comma&gt;&lt;comma&gt;Source_DUPLICATE_DELIMS&lt;comma&gt;no&lt;comma&gt;SourcegroupBox_5&lt;comma&gt;&lt;comma&gt;SourcegroupBox_6&lt;comma&gt;&lt;comma&gt;Source_STRIP_QUOTES&lt;comma&gt;yes&lt;comma&gt;Source_SORT_TABLE_CONFIG&lt;comma&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:&lt;semicolon&gt;%COL_DELIM:&lt;comma&gt;%HAS_DEFAULTS%START_NUM_ROWS:3%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;Attribute&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;STRING_OR_CHOICE_ENCODED&lt;space&gt;ATTRIBUTES&lt;space&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;Alpha&lt;solidus&gt;Num&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;LOOKUP_CHOICE&lt;space&gt;SORT_CHOICE&lt;space&gt;Alphabetic&lt;comma&gt;alphabetic%Numeric&lt;comma&gt;numeric&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%alphabetic%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;Order&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;LOOKUP_CHOICE&lt;space&gt;SORT_ORDER&lt;space&gt;Ascending&lt;comma&gt;ascending%Descending&lt;comma&gt;descending&lt;backslash&gt;&lt;quote&gt;&lt;quote&gt;%ascending&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;comma&gt;Source_GROUP_BY_DATASET&lt;comma&gt;no&lt;comma&gt;Source_IN_SEPARATOR&lt;comma&gt;&lt;quote&gt;&lt;comma&gt;&lt;quote&gt;&lt;comma&gt;SourceSORT_GROUP&lt;comma&gt;NO&lt;comma&gt;SourceSKIP_LINES&lt;comma&gt;1&lt;comma&gt;SourceFIELD_NAMES&lt;comma&gt;YES&lt;comma&gt;SourceDUPLICATE_DELIMS&lt;comma&gt;no&lt;comma&gt;SourceSTRIP_QUOTES&lt;comma&gt;yes,METAFILE,CSV"/>
+#! <XFORM_PARM PARM_NAME="FTTR_SEPARATOR" PARM_VALUE="SPACE"/>
+#! <XFORM_PARM PARM_NAME="CSV__FIELD_NAMES_AFTER_HEADER" PARM_VALUE="no"/>
+#! <XFORM_PARM PARM_NAME="SUPPORTED_SPATIAL_INTERACTIONS" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CONSTRAINTS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__SORT_TABLE_CONFIG" PARM_VALUE="&quot;NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:;%COL_DELIM:,%HAS_DEFAULTS%START_NUM_ROWS:3%\&quot;Attribute\&quot;%\&quot;STRING_OR_CHOICE_ENCODED ATTRIBUTES %\&quot;%%\&quot;Alpha/Num\&quot;%\&quot;LOOKUP_CHOICE SORT_CHOICE Alphabetic,alphabetic%Numeric,numeric\&quot;%alphabetic%\&quot;Order\&quot;%\&quot;LOOKUP_CHOICE SORT_ORDER Ascending,ascending%Descending,descending\&quot;%ascending&quot;"/>
+#! <XFORM_PARM PARM_NAME="CSV_SORT_GROUP" PARM_VALUE="NO"/>
+#! <XFORM_PARM PARM_NAME="FEATURETYPES" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="MERGE_HANDLING_GROUP" PARM_VALUE="FME_DISCLOSURE_OPEN"/>
+#! <XFORM_PARM PARM_NAME="WHERE" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="SINGLE_PORT" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__STRIP_QUOTES" PARM_VALUE="yes"/>
+#! <XFORM_PARM PARM_NAME="ATTRS_TO_EXPOSE" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_DISPLAY" PARM_VALUE="Based on Connections"/>
+#! <XFORM_PARM PARM_NAME="ATTR_NAME" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="CSV__DUPLICATE_DELIMS" PARM_VALUE="no"/>
+#! <XFORM_PARM PARM_NAME="INTERACT" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="CSV_SCAN_MAX_FEATURES" PARM_VALUE="1000"/>
+#! <XFORM_PARM PARM_NAME="AVAILABLE_FEATURE_TYPES" PARM_VALUE="_FEATUREREADER_OPTIONAL_FTTR_"/>
+#! <XFORM_PARM PARM_NAME="CSV__SCHEMA" PARM_VALUE="char,12,,char,6,,char,17,"/>
+#! <XFORM_PARM PARM_NAME="ENABLE_CACHE" PARM_VALUE="NO"/>
+#! <XFORM_PARM PARM_NAME="FEATURETYPES_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="CSV__SKIP_FOOTER" PARM_VALUE="0"/>
+#! <XFORM_PARM PARM_NAME="ATTR_PREFIX" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="DATASET" PARM_VALUE="&lt;at&gt;Value&lt;openparen&gt;path_windows&lt;closeparen&gt;"/>
+#! <XFORM_PARM PARM_NAME="CSV__SCHEMA_WITH_COL_NAMES" PARM_VALUE="name,char,12,,RecordName,char,6,,coltype,char,17,"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="26"
+#! TYPE="Sorter"
+#! VERSION="2"
+#! POSITION="843.996 -1050"
+#! BOUNDING_RECT="843.996 -1050 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="SORTED"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="SORT_PARM" PARM_VALUE="path_rootname ALPHA ASCENDING"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="Sorter"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="33"
+#! TYPE="NullAttributeMapper"
+#! VERSION="1"
+#! POSITION="2017.51 -1200"
+#! BOUNDING_RECT="2017.51 -1200 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="false"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15570"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="path_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_rootname" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_extension" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_filesize" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_ownername" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_readonly" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_modified_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_created_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_accessed_date" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_unix" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_directory_windows" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="path_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_matched_characters" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_{}" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="SurveyID" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="tablename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="SOURCE_ATTR_VAL" PARM_VALUE="Null Empty"/>
+#! <XFORM_PARM PARM_NAME="ATTRLIST" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="NULL_TREATMENT" PARM_VALUE="Null"/>
+#! <XFORM_PARM PARM_NAME="REG_EXP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP2" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="NEW_VALUE" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="ATTRCHOICE" PARM_VALUE="All Attributes"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="OTHER_VALUE" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="NullAttributeMapper"/>
+#! </TRANSFORMER>
+#! </TRANSFORMERS>
+#! <FEAT_LINKS>
+#! <FEAT_LINK
+#! IDENTIFIER="9"
+#! SOURCE_NODE="6"
+#! TARGET_NODE="7"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="16"
+#! SOURCE_NODE="7"
+#! TARGET_NODE="15"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="18"
+#! SOURCE_NODE="15"
+#! TARGET_NODE="17"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="23"
+#! SOURCE_NODE="21"
+#! TARGET_NODE="22"
+#! SOURCE_PORT_DESC="-1"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="24"
+#! SOURCE_NODE="22"
+#! TARGET_NODE="6"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="27"
+#! SOURCE_NODE="17"
+#! TARGET_NODE="26"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="28"
+#! SOURCE_NODE="26"
+#! TARGET_NODE="25"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="30"
+#! SOURCE_NODE="25"
+#! TARGET_NODE="33"
+#! SOURCE_PORT_DESC="fo 1"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="35"
+#! SOURCE_NODE="33"
+#! TARGET_NODE="32"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="-1"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! </FEAT_LINKS>
+#! <BREAKPOINTS>
+#! </BREAKPOINTS>
+#! <ATTR_LINKS>
+#! </ATTR_LINKS>
+#! <SUBDOCUMENTS>
+#! </SUBDOCUMENTS>
+#! <LOOKUP_TABLES>
+#! </LOOKUP_TABLES>
+#! </WORKSPACE>
+#! 
+GUI IGNORE SourceDataset_SCHEMA_FROM_TABLE_1,SCHEMA_FROM_TABLE_IN_NETWORK_AUTHENTICATION_SCHEMA_FROM_TABLE_1,SCHEMA_TABLE_NAME_SCHEMA_FROM_TABLE_1,FEATURE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1,ATTRIBUTE_NAME_COLUMN_SCHEMA_FROM_TABLE_1,ATTRIBUTE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1,GEOMETRY_TYPE_COLUMN_SCHEMA_FROM_TABLE_1,ATTRIBUTE_NAME_SEQUENCE_COLUMN_SCHEMA_FROM_TABLE_1,PATH_IN_GLOB_PATTERN_PATH_1,PATH_IN_TYPE_PATH_1,PATH_IN_RETRIEVE_FILE_PROPERTIES_PATH_1,SourceDataset_PATH_1,PATH_IN_NETWORK_AUTHENTICATION_PATH_1,DestDataset_SPATIALITE_1,SPATIALITE_OUT_OVERWRITE_DATASET_SPATIALITE_1,SPATIALITE_OUT_ENCODING_SPATIALITE_1,SPATIALITE_OUT_SPATIALITE_WRT_ADV_PARM_SPATIALITE_1,SPATIALITE_OUT_TRANSACTION_SIZE_SPATIALITE_1
+DEFAULT_MACRO SourceDataset_SCHEMA_FROM_TABLE $(FME_MF_DIR)AllSchemas_Flat_NoGeom.csv
+GUI FILE_OR_URL SourceDataset_SCHEMA_FROM_TABLE All_files|* Source Dataset:
+DEFAULT_MACRO SourceDataset_PATH G:\DataPrep\DHS_Tables
+GUI MULTIDIR SourceDataset_PATH Source Folder and File Pathnames Folder:
+DEFAULT_MACRO DestDataset_SPATIALITE $(FME_MF_DIR)All_DHS_Spatialite.db
+GUI FILENAME DestDataset_SPATIALITE SpatiaLite_Database_Files(*.sl3;*.db;*.sqlite)|*.sl3;*.db;*.sqlite|SpatiaLite_Database_Files(*.sl3)|*.sl3|SpatiaLite_Database_Files(*.db)|*.db|SpatiaLite_Database_Files(*.sqlite)|*.sqlite|All_files(*)|* Destination SpatiaLite Database File:
+INCLUDE [ if {{$(SourceDataset_SCHEMA_FROM_TABLE)} == {}} { puts_real {Parameter 'SourceDataset_SCHEMA_FROM_TABLE' must be given a value.}; exit 1; }; ]
+INCLUDE [ if {{$(SourceDataset_PATH)} == {}} { puts_real {Parameter 'SourceDataset_PATH' must be given a value.}; exit 1; }; ]
+INCLUDE [ if {{$(DestDataset_SPATIALITE)} == {}} { puts_real {Parameter 'DestDataset_SPATIALITE' must be given a value.}; exit 1; }; ]
+#! START_HEADER
+#! START_WB_HEADER
+READER_TYPE MULTI_READER
+MULTI_READER_TYPE{0} NULL
+MULTI_READER_FORMAT{0} SCHEMA_FROM_TABLE
+MULTI_READER_KEYWORD{0} SCHEMA_FROM_TABLE_1
+MULTI_READER_GEN_DIRECTIVES{0} READER_PARAMETERS,METAFILE<comma>CSV<comma>DATASET<comma>C:<lt>backslash<gt>Users<lt>backslash<gt>zool1301<lt>backslash<gt>Documents<lt>backslash<gt>DHS<lt>backslash<gt>DataExtraction<lt>backslash<gt>General<lt>backslash<gt>AllSchemas_Flat.csv<comma>COORDSYS<comma><comma>RUNTIME_MACROS<comma>groupBox_2<lt>comma<gt><lt>comma<gt>_IN_SEPARATOR<lt>comma<gt><lt>quote<gt><lt>comma<gt><lt>quote<gt><lt>comma<gt>_DUPLICATE_DELIMS<lt>comma<gt>no<lt>comma<gt>_STRIP_QUOTES<lt>comma<gt>yes<lt>comma<gt>_IN_FIELD_NAMES<lt>comma<gt>YES<lt>comma<gt>_FIELD_NAMES_AFTER_HEADER<lt>comma<gt>no<lt>comma<gt>groupBox<lt>comma<gt><lt>comma<gt>_SKIP_LINES<lt>comma<gt>1<lt>comma<gt>_SKIP_FOOTER<lt>comma<gt>0<lt>comma<gt>groupBox_6<lt>comma<gt><lt>comma<gt>_ENCODING<lt>comma<gt><lt>comma<gt>_ALLOW_SPACES_IN_COLUMN_NAMES<lt>comma<gt>yes<lt>comma<gt>groupBox_4<lt>comma<gt><lt>comma<gt>_GROUP_BY_DATASET<lt>comma<gt>no<lt>comma<gt>groupBox_5<lt>comma<gt><lt>comma<gt>_SCHEMA<lt>comma<gt><lt>quote<gt>char<lt>comma<gt>12<lt>comma<gt><lt>comma<gt>char<lt>comma<gt>6<lt>comma<gt><lt>comma<gt>char<lt>comma<gt>17<lt>comma<gt><lt>quote<gt><lt>comma<gt>_SCHEMA_WITH_COL_NAMES<lt>comma<gt><lt>quote<gt>name<lt>comma<gt>char<lt>comma<gt>12<lt>comma<gt><lt>comma<gt>RecordName<lt>comma<gt>char<lt>comma<gt>6<lt>comma<gt><lt>comma<gt>coltype<lt>comma<gt>char<lt>comma<gt>17<lt>comma<gt><lt>quote<gt><lt>comma<gt>SCAN_MAX_FEATURES<lt>comma<gt>1000<lt>comma<gt>SORT_GROUP<lt>comma<gt>NO<lt>comma<gt>FILTER_GROUP<lt>comma<gt>NO<lt>comma<gt>_SORT_PARAMS<lt>comma<gt><lt>comma<gt>_SORT_TABLE_CONFIG<lt>comma<gt><lt>quote<gt><lt>quote<gt><lt>quote<gt>NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:<lt>semicolon<gt>%COL_DELIM:<lt>comma<gt>%HAS_DEFAULTS%START_NUM_ROWS:3%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>Attribute<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>STRING_OR_CHOICE_ENCODED<lt>space<gt>ATTRIBUTES<lt>space<gt>name%RecordName%coltype<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>Alpha<lt>solidus<gt>Num<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>LOOKUP_CHOICE<lt>space<gt>SORT_CHOICE<lt>space<gt>Alphabetic<lt>comma<gt>alphabetic%Numeric<lt>comma<gt>numeric<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%alphabetic%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>Order<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>LOOKUP_CHOICE<lt>space<gt>SORT_ORDER<lt>space<gt>Ascending<lt>comma<gt>ascending%Descending<lt>comma<gt>descending<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%ascending<lt>quote<gt><lt>quote<gt><lt>quote<gt><lt>comma<gt>_FILTER_PARAMS<lt>comma<gt><lt>comma<gt>_FILTER_TABLE_CONFIG<lt>comma<gt><lt>quote<gt><lt>quote<gt><lt>quote<gt>NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:<lt>semicolon<gt>%COL_DELIM:<lt>comma<gt>%HAS_DEFAULTS%START_NUM_ROWS:3%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>Field<lt>space<gt>Name<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>STRING_OR_CHOICE_ENCODED<lt>space<gt>ATTRIBUTES<lt>space<gt>name%RecordName%coltype<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>Filter<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>STRING_ENCODED<lt>space<gt>_FILTER_REGEX<lt>space<gt><lt>backslash<gt><lt>quote<gt><lt>quote<gt>%%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>Invert<lt>space<gt>Filter<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%<lt>backslash<gt><lt>quote<gt><lt>quote<gt>CHECKBOX<lt>space<gt>_FILTER_UNMATCHED<lt>space<gt>yes%no<lt>backslash<gt><lt>quote<gt><lt>quote<gt>%no<lt>quote<gt><lt>quote<gt><lt>quote<gt><lt>comma<gt>_MERGE_SCHEMAS<lt>comma<gt>YES<comma>IDLIST<comma>,ATTRIBUTE_TYPE_COLUMN,coltype,FEATURE_TYPE_COLUMN,RecordName,SCHEMA_TABLE_NAME,CSV,MULTI_VALUE_SEPARATOR,<semicolon>,ATTRIBUTE_NAME_COLUMN,name,_MERGE_SCHEMAS,YES,ATTRIBUTE_NAME_SEQUENCE_COLUMN,,GEOMETRY_TYPE_COLUMN,
+MULTI_READER_TYPE{1} PATH
+MULTI_READER_KEYWORD{1} PATH_1
+MULTI_READER_GEN_DIRECTIVES{1} _MERGE_SCHEMAS,YES,TYPE,ANY,GLOB_PATTERN,*.csv,RETRIEVE_FILE_PROPERTIES,NO
+WRITER_TYPE MULTI_WRITER
+MULTI_WRITER_DATASET_ORDER BY_ID
+MULTI_WRITER_FIRST_WRITER_ID 0
+MULTI_WRITER_TYPE{0} SPATIALITE
+MULTI_WRITER_KEYWORD{0} SPATIALITE_1
+#! END_WB_HEADER
+#! START_WB_HEADER
+MACRO WB_KEYWORD "SCHEMA_FROM_TABLE_1"
+#! END_WB_HEADER
+#! START_SOURCE_HEADER SCHEMA_FROM_TABLE SCHEMA_FROM_TABLE_1
+# The dataset this mapping file was generated from was:
+#! END_SOURCE_HEADER
+#! START_WB_HEADER
+DEFAULT_MACRO SourceDataset
+INCLUDE [ if {{$(SourceDataset)} != ""} {                        \
+ puts {DEFAULT_MACRO SourceDataset_SCHEMA_FROM_TABLE_1 $(SourceDataset)}     \
+ } ]
+#! END_WB_HEADER
+#! START_SOURCE_HEADER SCHEMA_FROM_TABLE SCHEMA_FROM_TABLE_1
+DEFAULT_MACRO SourceDataset_SCHEMA_FROM_TABLE_1 $(SourceDataset_SCHEMA_FROM_TABLE)
+GUI FILE_OR_URL SourceDataset_SCHEMA_FROM_TABLE_1 All_files|* Source Dataset:
+DEFAULT_MACRO READER_PARAMETERS_SCHEMA_FROM_TABLE_1 METAFILE,CSV,DATASET,C:<backslash>Users<backslash>zool1301<backslash>Documents<backslash>DHS<backslash>DataExtraction<backslash>General<backslash>AllSchemas_Flat.csv,COORDSYS,,RUNTIME_MACROS,groupBox_2<comma><comma>_IN_SEPARATOR<comma><quote><comma><quote><comma>_DUPLICATE_DELIMS<comma>no<comma>_STRIP_QUOTES<comma>yes<comma>_IN_FIELD_NAMES<comma>YES<comma>_FIELD_NAMES_AFTER_HEADER<comma>no<comma>groupBox<comma><comma>_SKIP_LINES<comma>1<comma>_SKIP_FOOTER<comma>0<comma>groupBox_6<comma><comma>_ENCODING<comma><comma>_ALLOW_SPACES_IN_COLUMN_NAMES<comma>yes<comma>groupBox_4<comma><comma>_GROUP_BY_DATASET<comma>no<comma>groupBox_5<comma><comma>_SCHEMA<comma><quote>char<comma>12<comma><comma>char<comma>6<comma><comma>char<comma>17<comma><quote><comma>_SCHEMA_WITH_COL_NAMES<comma><quote>name<comma>char<comma>12<comma><comma>RecordName<comma>char<comma>6<comma><comma>coltype<comma>char<comma>17<comma><quote><comma>SCAN_MAX_FEATURES<comma>1000<comma>SORT_GROUP<comma>NO<comma>FILTER_GROUP<comma>NO<comma>_SORT_PARAMS<comma><comma>_SORT_TABLE_CONFIG<comma><quote><quote><quote>NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:<semicolon>%COL_DELIM:<comma>%HAS_DEFAULTS%START_NUM_ROWS:3%<backslash><quote><quote>Attribute<backslash><quote><quote>%<backslash><quote><quote>STRING_OR_CHOICE_ENCODED<space>ATTRIBUTES<space>name%RecordName%coltype<backslash><quote><quote>%%<backslash><quote><quote>Alpha<solidus>Num<backslash><quote><quote>%<backslash><quote><quote>LOOKUP_CHOICE<space>SORT_CHOICE<space>Alphabetic<comma>alphabetic%Numeric<comma>numeric<backslash><quote><quote>%alphabetic%<backslash><quote><quote>Order<backslash><quote><quote>%<backslash><quote><quote>LOOKUP_CHOICE<space>SORT_ORDER<space>Ascending<comma>ascending%Descending<comma>descending<backslash><quote><quote>%ascending<quote><quote><quote><comma>_FILTER_PARAMS<comma><comma>_FILTER_TABLE_CONFIG<comma><quote><quote><quote>NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:<semicolon>%COL_DELIM:<comma>%HAS_DEFAULTS%START_NUM_ROWS:3%<backslash><quote><quote>Field<space>Name<backslash><quote><quote>%<backslash><quote><quote>STRING_OR_CHOICE_ENCODED<space>ATTRIBUTES<space>name%RecordName%coltype<backslash><quote><quote>%%<backslash><quote><quote>Filter<backslash><quote><quote>%<backslash><quote><quote>STRING_ENCODED<space>_FILTER_REGEX<space><backslash><quote><quote>%%<backslash><quote><quote>Invert<space>Filter<backslash><quote><quote>%<backslash><quote><quote>CHECKBOX<space>_FILTER_UNMATCHED<space>yes%no<backslash><quote><quote>%no<quote><quote><quote><comma>_MERGE_SCHEMAS<comma>YES,IDLIST,
+DEFAULT_MACRO MULTI_VALUE_SEPARATOR_SCHEMA_FROM_TABLE_1 ;
+SCHEMA_FROM_TABLE_1_READER_PARAMETERS "$(READER_PARAMETERS_SCHEMA_FROM_TABLE_1)"
+DEFAULT_MACRO SCHEMA_TABLE_NAME_SCHEMA_FROM_TABLE_1 CSV
+SCHEMA_FROM_TABLE_1_SCHEMA_TABLE_NAME "$(SCHEMA_TABLE_NAME_SCHEMA_FROM_TABLE_1)"
+DEFAULT_MACRO FEATURE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1 RecordName
+SCHEMA_FROM_TABLE_1_FEATURE_TYPE_COLUMN "$(FEATURE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1)"
+DEFAULT_MACRO ATTRIBUTE_NAME_COLUMN_SCHEMA_FROM_TABLE_1 name
+SCHEMA_FROM_TABLE_1_ATTRIBUTE_NAME_COLUMN "$(ATTRIBUTE_NAME_COLUMN_SCHEMA_FROM_TABLE_1)"
+DEFAULT_MACRO ATTRIBUTE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1 coltype
+SCHEMA_FROM_TABLE_1_ATTRIBUTE_TYPE_COLUMN "$(ATTRIBUTE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1)"
+DEFAULT_MACRO GEOMETRY_TYPE_COLUMN_SCHEMA_FROM_TABLE_1 geomtype
+SCHEMA_FROM_TABLE_1_GEOMETRY_TYPE_COLUMN "$(GEOMETRY_TYPE_COLUMN_SCHEMA_FROM_TABLE_1)"
+SCHEMA_FROM_TABLE_1_MULTI_VALUE_SEPARATOR "$(MULTI_VALUE_SEPARATOR_SCHEMA_FROM_TABLE_1)"
+DEFAULT_MACRO ATTRIBUTE_NAME_SEQUENCE_COLUMN_SCHEMA_FROM_TABLE_1 _idx
+SCHEMA_FROM_TABLE_1_ATTRIBUTE_NAME_SEQUENCE_COLUMN "$(ATTRIBUTE_NAME_SEQUENCE_COLUMN_SCHEMA_FROM_TABLE_1)"
+# ===========================================================================
+DEFAULT_MACRO SCHEMA_FROM_TABLE_IN_NETWORK_AUTHENTICATION_SCHEMA_FROM_TABLE_1 AUTH_INFO_GROUP,NO,AUTH_METHOD,<lt>Unused<gt>,NAMED_CONNECTION,<lt>Unused<gt>,AUTH_USERNAME,<lt>Unused<gt>,AUTH_PASSWORD,<Unused>
+SCHEMA_FROM_TABLE_1_NETWORK_AUTHENTICATION "$(SCHEMA_FROM_TABLE_IN_NETWORK_AUTHENTICATION_SCHEMA_FROM_TABLE_1)"
+GUI OPTIONAL AUTHENTICATOR SCHEMA_FROM_TABLE_IN_NETWORK_AUTHENTICATION_SCHEMA_FROM_TABLE_1 CONTAINER%GROUP%CONTAINER_TITLE%"Network Authentication"%PROMPT_TYPE%NETWORK Network Authentication
+GUI TEXT SCHEMA_TABLE_NAME_SCHEMA_FROM_TABLE_1 Schema Table
+GUI TEXT FEATURE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1 Feature Type Column
+GUI TEXT ATTRIBUTE_NAME_COLUMN_SCHEMA_FROM_TABLE_1 Attribute Name Column
+GUI TEXT ATTRIBUTE_TYPE_COLUMN_SCHEMA_FROM_TABLE_1 Attribute Type Column
+GUI OPTIONAL TEXT GEOMETRY_TYPE_COLUMN_SCHEMA_FROM_TABLE_1 Geometry Type Column
+GUI OPTIONAL TEXT ATTRIBUTE_NAME_SEQUENCE_COLUMN_SCHEMA_FROM_TABLE_1 Attribute Name Sequence Column
+SCHEMA_FROM_TABLE_1_DATASET "$(SourceDataset_SCHEMA_FROM_TABLE_1)"
+#! END_SOURCE_HEADER
+#! START_WB_HEADER
+MACRO WB_KEYWORD "PATH_1"
+#! END_WB_HEADER
+#! START_SOURCE_HEADER PATH PATH_1
+# =============================================================================
+DEFAULT_MACRO PATH_IN_GLOB_PATTERN_PATH_1 *.csv
+PATH_1_GLOB_PATTERN "$(PATH_IN_GLOB_PATTERN_PATH_1)"
+GUI OPTIONAL TEXT_ENCODED PATH_IN_GLOB_PATTERN_PATH_1 Path Filter:
+# =============================================================================
+DEFAULT_MACRO PATH_IN_TYPE_PATH_1 ANY
+PATH_1_TYPE "$(PATH_IN_TYPE_PATH_1)"
+GUI CHOICE PATH_IN_TYPE_PATH_1 ANY%DIRECTORY%FILE Allowed Path Type:
+# =============================================================================
+DEFAULT_MACRO PATH_IN_RETRIEVE_FILE_PROPERTIES_PATH_1 NO
+PATH_1_RETRIEVE_FILE_PROPERTIES "$(PATH_IN_RETRIEVE_FILE_PROPERTIES_PATH_1)"
+GUI CHOICE PATH_IN_RETRIEVE_FILE_PROPERTIES_PATH_1 YES%NO Retrieve file properties:
+# =====================================================================
+# The following GUI line prompts for the folder from which to
+# read
+# The dataset this mapping file was generated from was:
+#! END_SOURCE_HEADER
+#! START_WB_HEADER
+DEFAULT_MACRO SourceDataset
+INCLUDE [ if {{$(SourceDataset)} != ""} {                        \
+ puts {DEFAULT_MACRO SourceDataset_PATH_1 $(SourceDataset)}     \
+ } ]
+#! END_WB_HEADER
+#! START_SOURCE_HEADER PATH PATH_1
+DEFAULT_MACRO SourceDataset_PATH_1 $(SourceDataset_PATH)
+GUI MULTIDIR SourceDataset_PATH_1 Source Folder and File Pathnames Folder:
+# ===========================================================================
+DEFAULT_MACRO PATH_IN_NETWORK_AUTHENTICATION_PATH_1 
+PATH_1_NETWORK_AUTHENTICATION "$(PATH_IN_NETWORK_AUTHENTICATION_PATH_1)"
+GUI OPTIONAL AUTHENTICATOR PATH_IN_NETWORK_AUTHENTICATION_PATH_1 CONTAINER%GROUP%CONTAINER_TITLE%"Network Authentication"%PROMPT_TYPE%NETWORK Network Authentication
+PATH_1_DATASET "$(SourceDataset_PATH_1)"
+#! END_SOURCE_HEADER
+#! START_WB_HEADER
+MACRO WB_KEYWORD "SPATIALITE_1"
+#! END_WB_HEADER
+#! START_DEST_HEADER SPATIALITE SPATIALITE_1
+# ============================================================================
+# The following GUI line prompts for a file to be used as the
+# the destination for the SpatiaLite writer.
+# The user input is stored in a macro, which is then used to define
+# the dataset to be written.
+#! END_DEST_HEADER
+#! START_WB_HEADER
+DEFAULT_MACRO DestDataset
+INCLUDE [ if {"$(DestDataset)" != ""} {                          \
+ puts {DEFAULT_MACRO DestDataset_SPATIALITE_1 $(DestDataset)}         \
+ } ]
+#! END_WB_HEADER
+#! START_DEST_HEADER SPATIALITE SPATIALITE_1
+DEFAULT_MACRO DestDataset_SPATIALITE_1 $(DestDataset_SPATIALITE)
+GUI FILENAME DestDataset_SPATIALITE_1 SpatiaLite_Database_Files(*.sl3;*.db;*.sqlite)|*.sl3;*.db;*.sqlite|SpatiaLite_Database_Files(*.sl3)|*.sl3|SpatiaLite_Database_Files(*.db)|*.db|SpatiaLite_Database_Files(*.sqlite)|*.sqlite|All_files(*)|* Destination SpatiaLite Database File:
+DEFAULT_MACRO SPATIALITE_OUT_OVERWRITE_DATASET_SPATIALITE_1 No
+SPATIALITE_1_OVERWRITE_DATASET "$(SPATIALITE_OUT_OVERWRITE_DATASET_SPATIALITE_1)"
+GUI CHOICE SPATIALITE_OUT_OVERWRITE_DATASET_SPATIALITE_1 Yes%No Overwrite Existing Database:
+DEFAULT_MACRO SPATIALITE_OUT_OVERWRITE_TABLES_SPATIALITE_1 No
+SPATIALITE_1_OVERWRITE_TABLES "$(SPATIALITE_OUT_OVERWRITE_TABLES_SPATIALITE_1)"
+DEFAULT_MACRO SPATIALITE_OUT_GENERIC_GEOMETRY_SPATIALITE_1 Yes
+SPATIALITE_1_GENERIC_GEOMETRY "$(SPATIALITE_OUT_GENERIC_GEOMETRY_SPATIALITE_1)"
+DEFAULT_MACRO SPATIALITE_OUT_COMPRESS_GEOMETRY_SPATIALITE_1 Yes
+SPATIALITE_1_COMPRESS_GEOMETRY "$(SPATIALITE_OUT_COMPRESS_GEOMETRY_SPATIALITE_1)"
+DEFAULT_MACRO SPATIALITE_OUT_CREATE_SPATIAL_INDEX_SPATIALITE_1 Yes
+SPATIALITE_1_CREATE_SPATIAL_INDEX "$(SPATIALITE_OUT_CREATE_SPATIAL_INDEX_SPATIALITE_1)"
+DEFAULT_MACRO SPATIALITE_OUT_ENCODING_SPATIALITE_1 
+SPATIALITE_1_ENCODING "$(SPATIALITE_OUT_ENCODING_SPATIALITE_1)"
+GUI OPTIONAL ENCODING SPATIALITE_OUT_ENCODING_SPATIALITE_1 * Character Encoding:
+DEFAULT_MACRO SPATIALITE_OUT_SPATIALITE_WRT_ADV_PARM_SPATIALITE_1 
+GUI DISCLOSUREGROUP SPATIALITE_OUT_SPATIALITE_WRT_ADV_PARM_SPATIALITE_1 TRANSACTION_SIZE Advanced
+DEFAULT_MACRO SPATIALITE_OUT_TRANSACTION_SIZE_SPATIALITE_1 5000
+SPATIALITE_1_TRANSACTION_SIZE "$(SPATIALITE_OUT_TRANSACTION_SIZE_SPATIALITE_1)"
+GUI INTEGER SPATIALITE_OUT_TRANSACTION_SIZE_SPATIALITE_1 Transaction Interval:
+# ============================================================================
+# Opt in for destination dataset type vs format type validation
+DEFAULT_MACRO SPATIALITE_OUT_DESTINATION_DATASETTYPE_VALIDATION_SPATIALITE_1 Yes
+SPATIALITE_1_DESTINATION_DATASETTYPE_VALIDATION "$(SPATIALITE_OUT_DESTINATION_DATASETTYPE_VALIDATION_SPATIALITE_1)"
+DEFAULT_MACRO SPATIALITE_OUT_COORDINATE_SYSTEM_GRANULARITY_SPATIALITE_1 FEATURE_TYPE
+SPATIALITE_1_COORDINATE_SYSTEM_GRANULARITY "$(SPATIALITE_OUT_COORDINATE_SYSTEM_GRANULARITY_SPATIALITE_1)"
+SPATIALITE_1_DATASET "$(DestDataset_SPATIALITE_1)"
+#! END_DEST_HEADER
+#! END_HEADER
+
+LOG_FILENAME "$(FME_MF_DIR)Load_all_data_to_combined_dbSQLite_Spatialite.log"
+LOG_APPEND NO
+LOG_MAX_FEATURES 200
+LOG_MAX_RECORDED_FEATURES 200
+LOG_MAX_PRECISION Yes
+FME_REPROJECTION_ENGINE FME
+FME_IMPLICIT_CSMAP_REPROJECTION_MODE Auto
+FME_GEOMETRY_HANDLING Enhanced
+FME_STROKE_MAX_DEVIATION 0
+LOG_FILTER_MASK -1
+DEFAULT_MACRO DATASET_KEYWORD_SCHEMA_FROM_TABLE_1 SCHEMA_FROM_TABLE_1
+DEFAULT_MACRO DATASET_KEYWORD_PATH_1 PATH_1
+DEFAULT_MACRO DATASET_KEYWORD_SPATIALITE_1 SPATIALITE_1
+# -------------------------------------------------------------------------
+
+SCHEMA_FROM_TABLE_1_READER_META_ATTRIBUTES fme_feature_type
+
+# -------------------------------------------------------------------------
+
+PATH_1_READER_META_ATTRIBUTES fme_feature_type
+
+# -------------------------------------------------------------------------
+
+MULTI_READER_CONTINUE_ON_READER_FAILURE No
+
+# -------------------------------------------------------------------------
+
+MACRO WORKSPACE_NAME Load_all_data_to_combined_dbSQLite_Spatialite
+MACRO FME_VIEWER_APP fmedatainspector
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * RoutingFactory   FACTORY_NAME "Router and Unexpected Input Remover"   INPUT FEATURE_TYPE *    ROUTE PATH PATH_1::PATH multi_reader_keyword,$(DATASET_KEYWORD_PATH_1) TO FME_GENERIC ::PATH ALIAS_GEOMETRY    MERGE_INPUT Yes   OUTPUT ROUTED FEATURE_TYPE *
+PATH_1_MERGE_DEF PATH_1::PATH EXACT PATH
+DEFAULT_MACRO WB_CURRENT_CONTEXT
+# -------------------------------------------------------------------------
+
+MACRO casemac
+INCLUDE [ if { {no} == {no} } { puts {MACRO casemac -nocase}} ]
+Tcl2 proc StringSearcher_2_c8113bac_fe77_4ddb_8cd0_e7424e04148c3_doGrep { stringToSearch regExp matchedChars matchedParts } {   set results [regexp -inline $(casemac) [FME_DecodeText $regExp]                  [FME_DecodeText $stringToSearch]];   set attrName $matchedChars;   set index 0;   foreach part $results {       FME_SetAttribute $attrName $part;       set attrName "$matchedParts{$index}";       incr index;   };   if {$index > 0} {       FME_UnsetAttributes $attrName;   };   return $index; }
+FACTORY_DEF * TestFactory    FACTORY_NAME StringSearcher_2    INPUT  FEATURE_TYPE PATH    TEST @Tcl2("StringSearcher_2_c8113bac_fe77_4ddb_8cd0_e7424e04148c3_doGrep {@EvaluateExpression(FDIV,STRING_ENCODED,<at>Value<openparen>path_rootname<closeparen>,StringSearcher_2)} {^<openparen><backslash>d+<closeparen><backslash>.<openparen><backslash>w+<closeparen><backslash>.<openparen>.+<closeparen><dollar>} {_matched_characters} {_}") > 0    OUTPUT PASSED FEATURE_TYPE StringSearcher_2_MATCHED
+
+# -------------------------------------------------------------------------
+
+Tcl2 proc ListIndexer_indexer {index numElements prefix} {    if {$index < 0 } {       set index [expr $numElements + $index];    };    regsub \"{}\" {_{}} \"{$index}\" listWithIndex;    regsub \"{}\" {_{}} {} listBase;    set complexListExp "$listWithIndex\.";    set prefixLength [expr [string length $complexListExp]-1];    set prefix [FME_DecodeText $prefix];    foreach attr [FME_AttributeNames] {      set newAttr {};      if {$attr == $listWithIndex} {        set newAttr $listBase;      } elseif {[string first $complexListExp $attr] == 0} {        set newAttr [string replace $attr 0 $prefixLength];      };      if {$newAttr != {}} {          if {$prefix != {} } {            set newAttr $prefix$newAttr;          };          if {[string first {fme_} $newAttr] != 0} {              set first [string first {fme_} $newAttr];              lappend attrsToCopy $newAttr $attr;          };      };    };    if {[info exists attrsToCopy] && [llength $attrsToCopy] > 0} {      eval FME_Execute CopyAttributes $attrsToCopy;    }; }
+FACTORY_DEF * TestFactory    FACTORY_NAME ListIndexer    INPUT  FEATURE_TYPE StringSearcher_2_MATCHED    TEST "0" >= 0    OUTPUT PASSED FEATURE_TYPE ListIndexer_OUTPUT @Tcl2("ListIndexer_indexer 0 0 {SurveyID}")    OUTPUT FAILED FEATURE_TYPE ListIndexer_OUTPUT @Tcl2("ListIndexer_indexer 0 @NumElements(_{})  {SurveyID}")
+# -------------------------------------------------------------------------
+
+Tcl2 proc ListIndexer_2_indexer {index numElements prefix} {    if {$index < 0 } {       set index [expr $numElements + $index];    };    regsub \"{}\" {_{}} \"{$index}\" listWithIndex;    regsub \"{}\" {_{}} {} listBase;    set complexListExp "$listWithIndex\.";    set prefixLength [expr [string length $complexListExp]-1];    set prefix [FME_DecodeText $prefix];    foreach attr [FME_AttributeNames] {      set newAttr {};      if {$attr == $listWithIndex} {        set newAttr $listBase;      } elseif {[string first $complexListExp $attr] == 0} {        set newAttr [string replace $attr 0 $prefixLength];      };      if {$newAttr != {}} {          if {$prefix != {} } {            set newAttr $prefix$newAttr;          };          if {[string first {fme_} $newAttr] != 0} {              set first [string first {fme_} $newAttr];              lappend attrsToCopy $newAttr $attr;          };      };    };    if {[info exists attrsToCopy] && [llength $attrsToCopy] > 0} {      eval FME_Execute CopyAttributes $attrsToCopy;    }; }
+FACTORY_DEF * TestFactory    FACTORY_NAME ListIndexer_2    INPUT  FEATURE_TYPE ListIndexer_OUTPUT    TEST "2" >= 0    OUTPUT PASSED FEATURE_TYPE ListIndexer_2_OUTPUT @Tcl2("ListIndexer_2_indexer 2 0 {RecordName}")    OUTPUT FAILED FEATURE_TYPE ListIndexer_2_OUTPUT @Tcl2("ListIndexer_2_indexer 2 @NumElements(_{})  {RecordName}")
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TeeFactory    FACTORY_NAME AttributeRenamer    INPUT  FEATURE_TYPE ListIndexer_2_OUTPUT    OUTPUT FEATURE_TYPE AttributeRenamer_OUTPUT         @RenameAttributes(ATTR_LIST_DEF_VAL_ENCODED, RecordName_,tablename,,SurveyID_,SurveyID,)
+
+
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TestFactory    FACTORY_NAME Tester    INPUT  FEATURE_TYPE AttributeRenamer_OUTPUT    TEST @EvaluateExpression(FDIV,STRING_ENCODED,<at>Value<openparen>tablename<closeparen>,Tester) NOT_IN REC91<comma>REC95<comma>RECH3<comma>REC94<comma>REC97<comma>REC98<comma>RECH4<comma>RECH8<comma>REC99<comma>RECH7<comma>RECHG2 ENCODED    BOOLEAN_OPERATOR AND    OUTPUT PASSED FEATURE_TYPE Tester_PASSED
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * SortFactory    FACTORY_NAME Sorter    INPUT  FEATURE_TYPE Tester_PASSED    SORT_BY path_rootname ALPHA ASCENDING    OUTPUT SORTED FEATURE_TYPE Sorter_SORTED
+
+# -------------------------------------------------------------------------
+MACRO FeatureReader_OUTPUT_PORTS_ENCODED 
+MACRO FeatureReader_DIRECTIVES SCAN_MAX_FEATURES 1000 _FIELD_NAMES_AFTER_HEADER no _FILTER_TABLE_CONFIG """NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:;%COL_DELIM:,%HAS_DEFAULTS%START_NUM_ROWS:3%\""Field Name\""%\""STRING_OR_CHOICE_ENCODED ATTRIBUTES %\""%%\""Filter\""%\""STRING_ENCODED _FILTER_REGEX \""%%\""Invert Filter\""%\""CHECKBOX _FILTER_UNMATCHED yes%no\""%no""" FILTER_GROUP NO _SKIP_LINES 1 _SCHEMA char,12,,char,6,,char,17, _ALLOW_SPACES_IN_COLUMN_NAMES yes _SCHEMA_WITH_COL_NAMES name,char,12,,RecordName,char,6,,coltype,char,17, _SKIP_FOOTER 0 _IN_FIELD_NAMES YES _DUPLICATE_DELIMS no _STRIP_QUOTES yes _SORT_TABLE_CONFIG """NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:;%COL_DELIM:,%HAS_DEFAULTS%START_NUM_ROWS:3%\""Attribute\""%\""STRING_OR_CHOICE_ENCODED ATTRIBUTES %\""%%\""Alpha/Num\""%\""LOOKUP_CHOICE SORT_CHOICE Alphabetic,alphabetic%Numeric,numeric\""%alphabetic%\""Order\""%\""LOOKUP_CHOICE SORT_ORDER Ascending,ascending%Descending,descending\""%ascending""" _GROUP_BY_DATASET no _IN_SEPARATOR , SORT_GROUP NO
+
+# Values come in encoded and come out decoded.
+Tcl2 proc FeatureReader_findInListElseDefault { valueEncoded defaultValue } {    if { [lsearch [split {$(FeatureReader_OUTPUT_PORTS_ENCODED)}] $valueEncoded] >= 0} {       return FeatureReader_[FME_DecodeText $valueEncoded]    } else {       return FeatureReader_$defaultValue    } }
+# Always provide an INTERACTION, otherwise the factory defaults to ENVELOPE_INTERSECTS
+INCLUDE [if { ( {<Unused>} == {<Unused>} ) || ( {($INTERACT_OPTIONS)} == {} ) } {             puts {MACRO FCTQUERY_INTERACTION_LINE FCTQUERY_INTERACTION NONE};          } else {             puts {MACRO FCTQUERY_INTERACTION_LINE FCTQUERY_INTERACTION "<Unused>"};          }         ]
+# Consolidate the attribute merge options to what the factory expects
+DEFAULT_MACRO FeatureReader_COMBINE_ATTRS
+INCLUDE [       if { {MERGE} == {MERGE} } {          puts "MACRO FeatureReader_COMBINE_ATTRS PREFER_RESULT";       } else {          puts "MACRO FeatureReader_COMBINE_ATTRS MERGE";       };    ]
+FACTORY_DEF * QueryFactory    FACTORY_NAME FeatureReader    INPUT  FEATURE_TYPE Sorter_SORTED    $(FCTQUERY_INTERACTION_LINE)    QUERYFCT_TABLE_SEPARATOR SPACE    COMBINE_ATTRIBUTES  $(FeatureReader_COMBINE_ATTRS)    QUERYFCT_ATTRIBUTE_PREFIX <Unused>    COMBINE_GEOMETRY    RESULT_ONLY    ENABLE_CACHE        NO    READER_TYPE         CSV    READER_DATASET      "@EvaluateExpression(FDIV,STRING_ENCODED,<at>Value<openparen>path_windows<closeparen>,FeatureReader)"    READER_IDS    READER_DIRECTIVES   META_MACROS,SourceSCAN_MAX_FEATURES<comma>1000<comma>SourcegroupBox<comma><comma>Source_FIELD_NAMES_AFTER_HEADER<comma>no<comma>Source_FILTER_TABLE_CONFIG<comma><quote><quote><quote>NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:<semicolon>%COL_DELIM:<comma>%HAS_DEFAULTS%START_NUM_ROWS:3%<backslash><quote><quote>Field<space>Name<backslash><quote><quote>%<backslash><quote><quote>STRING_OR_CHOICE_ENCODED<space>ATTRIBUTES<space>%<backslash><quote><quote>%%<backslash><quote><quote>Filter<backslash><quote><quote>%<backslash><quote><quote>STRING_ENCODED<space>_FILTER_REGEX<space><backslash><quote><quote>%%<backslash><quote><quote>Invert<space>Filter<backslash><quote><quote>%<backslash><quote><quote>CHECKBOX<space>_FILTER_UNMATCHED<space>yes%no<backslash><quote><quote>%no<quote><quote><quote><comma>SourceFILTER_GROUP<comma>NO<comma>Source_SKIP_LINES<comma>1<comma>Source_SCHEMA<comma><quote>char<comma>12<comma><comma>char<comma>6<comma><comma>char<comma>17<comma><quote><comma>Source_ALLOW_SPACES_IN_COLUMN_NAMES<comma>yes<comma>Source_ENCODING<comma><comma>Source_SCHEMA_WITH_COL_NAMES<comma><quote>name<comma>char<comma>12<comma><comma>RecordName<comma>char<comma>6<comma><comma>coltype<comma>char<comma>17<comma><quote><comma>SourcegroupBox_2<comma><comma>Source_SKIP_FOOTER<comma>0<comma>Source_IN_FIELD_NAMES<comma>YES<comma>SourcegroupBox_4<comma><comma>Source_DUPLICATE_DELIMS<comma>no<comma>SourcegroupBox_5<comma><comma>SourcegroupBox_6<comma><comma>Source_STRIP_QUOTES<comma>yes<comma>Source_SORT_TABLE_CONFIG<comma><quote><quote><quote>NOT_OK_IF_INVALID%NO_LABEL%ROW_DELIM:<semicolon>%COL_DELIM:<comma>%HAS_DEFAULTS%START_NUM_ROWS:3%<backslash><quote><quote>Attribute<backslash><quote><quote>%<backslash><quote><quote>STRING_OR_CHOICE_ENCODED<space>ATTRIBUTES<space>%<backslash><quote><quote>%%<backslash><quote><quote>Alpha<solidus>Num<backslash><quote><quote>%<backslash><quote><quote>LOOKUP_CHOICE<space>SORT_CHOICE<space>Alphabetic<comma>alphabetic%Numeric<comma>numeric<backslash><quote><quote>%alphabetic%<backslash><quote><quote>Order<backslash><quote><quote>%<backslash><quote><quote>LOOKUP_CHOICE<space>SORT_ORDER<space>Ascending<comma>ascending%Descending<comma>descending<backslash><quote><quote>%ascending<quote><quote><quote><comma>Source_GROUP_BY_DATASET<comma>no<comma>Source_IN_SEPARATOR<comma><quote><comma><quote><comma>SourceSORT_GROUP<comma>NO<comma>SourceSKIP_LINES<comma>1<comma>SourceFIELD_NAMES<comma>YES<comma>SourceDUPLICATE_DELIMS<comma>no<comma>SourceSTRIP_QUOTES<comma>yes,METAFILE,CSV    QUERYFCT_OUTPUT     "BASED_ON_CONNECTIONS"    CONTINUE_ON_READER_ERROR YES    READER_PARAMS     $(FeatureReader_DIRECTIVES)    OUTPUT RESULT FEATURE_TYPE *         @SupplyAttributes(fme_feature_type,@FeatureType())         @Tcl2("set FME_FeatureType [FeatureReader_findInListElseDefault [FME_EncodeText $FME_FeatureType] {<OTHER>}]")         @Transform(CSV,FME_GENERIC)
+
+# -------------------------------------------------------------------------
+
+Tcl2 proc NullAttributeMapper_0c796f05_43cf_4fc6_9d65_becc42bd4c7a3_null_replacer { otherValue newValue regExp } {    set attrs [split {<Unused>} { }];    set decode true;    if { {ALL} == {ALL} } {       set attrs [FME_AttributeNames];       set decode false; 	 };    set decodedVal [FME_DecodeText $otherValue];    set decodedRegExp [FME_DecodeText $regExp];    foreach attr $attrs {      set act {NOOP};      if {$decode} {        set attr [FME_DecodeText $attr];      };      if {[FME_AttributeExists $attr]} {          set attrVal [FME_GetAttribute $attr];          if {[FME_IsAttributeNull $attr] } {             if {[string first {SETNULL} {SETNULL EMPTY}] != -1} {                 set act {SETNULL};             };          }          elseif { [string first {EMPTY} {SETNULL EMPTY}] != -1 && $attrVal == {}} {             set act {SETNULL};          }          elseif { $otherValue != {} && [string equal $attrVal $decodedVal]} {             set act {SETNULL};          }          elseif { $decodedRegExp != {} && [regexp $decodedRegExp $attrVal]==1 }          {             set act {SETNULL};          };      }      elseif {[string first {MISSINGATTR} {SETNULL EMPTY}] != -1} {             set act {SETNULL};      };      if {$act == {DELETEATTR} } {         FME_UnsetAttributes $attr;      } elseif { $act == {SETVALUE} } {         FME_SetAttribute $attr [FME_DecodeText $newValue];      } elseif { $act == {SETNULL} } {         FME_SetAttributeNull $attr;      } elseif { $act == {EMPTY} }      {         FME_SetAttribute $attr {};      };   }; }
+FACTORY_DEF * TeeFactory    FACTORY_NAME NullAttributeMapper    INPUT  FEATURE_TYPE FeatureReader_<OTHER>    OUTPUT FEATURE_TYPE NullAttributeMapper_OUTPUT         @Tcl2("NullAttributeMapper_0c796f05_43cf_4fc6_9d65_becc42bd4c7a3_null_replacer {} {<Unused>} {}")
+
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * RoutingFactory FACTORY_NAME "Destination Feature Type Routing Correlator"   INPUT FEATURE_TYPE *    ROUTE FME_GENERIC NullAttributeMapper_OUTPUT TO SPATIALITE __GO_TO_FINAL_OUTPUT_ROUTER__ multi_writer_id,0,<at>SupplyAttributes<openparen>ENCODED<comma>fme_template_feature_type<comma>table1<closeparen>,<at>SupplyAttributes<openparen>ENCODED<comma>__wb_out_feat_type__<comma>table1<closeparen>,<at>EvaluateExpression<openparen>ATTR_CREATE_EXPR<comma>__wb_out_feat_type__<comma><lt>at<gt>Value<lt>openparen<gt>tablename<lt>closeparen<gt><comma>table1<closeparen> GEOMETRY   OUTPUT ROUTED FEATURE_TYPE * @FeatureType(ENCODED,@Value(__wb_out_feat_type__)) @RemoveAttributes(__wb_out_feat_type__)   OUTPUT NOT_ROUTED FEATURE_TYPE __nuke_me__ @Tcl2("FME_StatMessage 818059 [FME_GetAttribute fme_template_feature_type] 818060 818061 fme_warn")
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TeeFactory   FACTORY_NAME "Final Output Nuker"   INPUT FEATURE_TYPE __nuke_me__
+
+# -------------------------------------------------------------------------
+SPATIALITE_1_DEF_TEMPLATE table1   spatialite_type              wkb_geometry   spatialite_overwrite_tables  No   spatialite_create_spatial_index No   spatialite_compress_geometry Yes   fme_schema_readers           SCHEMA_FROM_TABLE_1   fme_schema_feature_first     No   fme_schema_name_expression   @EvaluateExpression(FDIV,STRING,<at>Value<openparen>tablename<closeparen>,table1)
