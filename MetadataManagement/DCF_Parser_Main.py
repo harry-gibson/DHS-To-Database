@@ -2,7 +2,7 @@ import re
 import os
 from difflib import SequenceMatcher as SM
 
-def parseDCF(self, dcfFile):
+def parseDCF(dcfFile):
     '''
     Parse a .DCF file (CSPro dictionary specification) into a structured object
     
@@ -47,29 +47,30 @@ def parseDCF(self, dcfFile):
     skippingChunk = False
     
     currentlyParsing = "None"
-    currentIdName = "None"
-    currentIdLabel = "None"
-    currentIdStart = 0 
-    currentIdLength = 0
+    currentIds = []
     
     myRecords = {}
     myLevels = {}
     myItems = []
     myCountries = {}
     mySkippedChunks = [] 
-    #currentSurveyCode = os.path.basename(dcfFile).split(os.extsep)[0]
+    
+    # Get a unique reference code for this dcf file that should be entered into the output data. 
+    # Would be cleaner / more general to accept this as a method parameter.
     currentSurveyCode = os.path.extsep.join(os.path.basename(dcfFile).split(os.path.extsep)[:-1])
     chunkInfo = {
         'FileCode':currentSurveyCode
     }
     
-    #with open(r'C:\Users\zool1301\Documents\DHS\Namibia_Test\Hierarchical Format\NMIR60.DCF') as fileIn:
     with open(dcfFile) as fileIn:
-    #with open(r'C:\Users\zool1301\Documents\DHS\RecodeManuals\MRecode6.dcf') as fileIn:
-        
+        # We read through the dcf line-by-line. The structure of the file is given by the order in 
+        # which sections occur, and the sections ("chunks") are delimited by blank lines. We take 
+        # advantage of these facts to build the output record specification and value specification 
+        # tables.
         for line in fileIn:
             parsedLines +=1
             # Are we on a chunk start (a line with something in [Brackets])?
+            # If so reset the chunkInfo global, and anything else as appropriate
             if line.find('[Level]') != -1:
                 currentChunkType = "Level"
                 skippingChunk = False
@@ -88,12 +89,11 @@ def parseDCF(self, dcfFile):
                 skippingChunk = False
                 chunkInfo = {}
             elif line.find('[IdItems]') != -1:
+                # Reset the iditems global as well
                 currentChunkType = "IdItems"
                 skippingChunk = False
                 currentlyParsing = "IdItems"
-                currentIdStart = 0
-                currentIdLength = 0
-                currentIdName = "None"
+                currentIds = []
                 chunkInfo = {}
             elif line.find('[Dictionary]') != -1:
                 currentChunkType = "Dictionary"
@@ -107,13 +107,13 @@ def parseDCF(self, dcfFile):
                 skippingChunk = True
                 mySkippedChunks.append(line)
 
-            # Or are we on the end of a chunk, marked by a blank line?
+            # Or are we on the end of a chunk, marked by a blank line? This is the point at which 
+            # we may want to do something with the previous lines of info
             elif line == '\n':
                 if skippingChunk:
                     # this was a bunch of lines we skip (e.g. those following '[Dictionary]')
                     skippingChunk = False
                 else:
-                    
                     if currentChunkType == 'Dictionary':
                         # This will be the first item in the file and will be written to the first 
                         # row of the output. It's an item that describes for all lines of the data file 
@@ -127,13 +127,14 @@ def parseDCF(self, dcfFile):
                         # so just copy it over
                         chunkInfo['Start'] = chunkInfo['RecordTypeStart']
                         chunkInfo['Len'] = chunkInfo['RecordTypeLen']
+                        chunkInfo['ItemType'] = 'RecordDesciption'
                         myItems.append(chunkInfo)
                         # set the default values for the item parsing info
                         currentSurveyZeroFill = chunkInfo['ZeroFill']
                         currentSurveyDecChar = chunkInfo['DecimalChar']
                     
                     # If we're at the end of a chunk defining a level or record then place the 
-                    # info into the globals so that the item parser will read them for items 7
+                    # info into the globals so that the item parser will read them for items
                     # that FOLLOW afterward
                     elif currentChunkType == 'Level':
                         currentLevelName = chunkInfo['Name']
@@ -152,21 +153,32 @@ def parseDCF(self, dcfFile):
                         currentRecordLabel = chunkInfo['Label']
                         currentRecordType = chunkInfo['RecordTypeValue']
                         
-                        # save an "item" with the new record name/type/label reflecting the 
-                        # id item for this record. In other words the first output row of each record 
-                        # will describe the record itself and in particular the start/len of the id item
+                        # At the end of a record chunk, we save an "item" with the new record name/type/label 
+                        # reflecting the id item for this record. In other words the first output row of each record 
+                        # will describe the record itself and in particular the start/len of the id item(s)
                         chunkInfo['FileCode']=currentSurveyCode
-                        chunkInfo['Name'] = currentIdName
-                        chunkInfo['Label'] = currentIdLabel
-                        chunkInfo['Start'] = currentIdStart
-                        chunkInfo['Len'] = currentIdLength
                         # apply the parent hierarchical labels, just stored in simple globals
                         chunkInfo['RecordName'] = currentRecordName
                         chunkInfo['RecordLabel'] = currentRecordLabel
                         chunkInfo['RecordTypeValue'] = currentRecordType.strip("'")
                         chunkInfo['LevelName'] = currentLevelName
                         chunkInfo['LevelLabel'] = currentLevelLabel
-                        myItems.append(chunkInfo)
+                        chunkInfo['ItemType'] = 'IdItem'
+                        for iditem in currentIds:
+                            # add a row for each id item 
+                            # Normally there will only be one (which may implicitly code more than one within it e.g. 
+                            # caseid includes HHID and another number), but sometimes (looking at you, HIV datasets)
+                            # there may be several encoded as several items
+                            newItem = {}
+                            for i in chunkInfo:
+                                # copy the common record-related stuff, careful not to just modify chunkInfo and add it repeatedly
+                                # as that wouldn't work (reference types and all that jazz)
+                                newItem[i] = chunkInfo[i]
+                            newItem['Name'] = iditem['Name']
+                            newItem['Label'] = iditem['Label']
+                            newItem['Start'] = iditem['Start']
+                            newItem['Len'] = iditem['Len']
+                            myItems.append(newItem)
 
                         if myRecords.has_key(currentRecordName):
                             if myRecords[currentRecordName] == currentRecordLabel:
@@ -186,7 +198,7 @@ def parseDCF(self, dcfFile):
                         # - sometimes they abbreviate the valueset but not the previous label
                         s1 = chunkInfo['Label']
                         s2 = myItems[-1]['Label']
-                        simRatio = SM(None,s1,s2).ratio()
+                        simRatio = SM(None, s1, s2).ratio()
                         if not (simRatio > 0.7 or chunkInfo['Label'].find(myItems[-1]['Label']) == 0):
                             print ("Warning, valueset did not seem to match item at line {0!s} of file {1!s} - please check!".
                                    format(parsedLines,dcfFile))
@@ -204,33 +216,23 @@ def parseDCF(self, dcfFile):
                                         currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
                             else:
                                 rangeInfo = chunkInfo['ValueRanges'][0]
-                                currentValues.append((rangeInfo[0],rangeInfo[2],"RangeMin"))
-                                currentValues.append((rangeInfo[1],rangeInfo[2],"RangeMax"))
-                                #myItems[-1]['Range_Low_Value'] = rangeInfo[0]
-                                #myItems[-1]['Range_High_Value'] = rangeInfo[1]
-                                #myItems[-1]['Range_Desc'] = rangeInfo[2]
-                        
+                                currentValues.append((rangeInfo[0], rangeInfo[2], "RangeMin"))
+                                currentValues.append((rangeInfo[1], rangeInfo[2], "RangeMax"))
+                               
                         if myItems[-1].has_key('Values'):
-                                # one item in the file (potentially more in others?) has two valueset chunks!
+                                # occasionally items have two valueset chunks!
                             myItems[-1]['Values'].extend(currentValues)
                         else:
                             myItems[-1]['Values'] = currentValues
-                        #if chunkInfo.has_key('Range_Low_Value'):
-                        #    myItems[-1]['Range_Low_Value'] = chunkInfo['Range_Low_Value']
-                        #if chunkInfo.has_key('Range_High_Value'):
-                        #    myItems[-1]['Range_High_Value'] = chunkInfo['Range_High_Value']
-                        #if chunkInfo.has_key('Range_Desc'):
-                        #    myItems[-1]['Range_Desc'] = chunkInfo['Range_Desc']
                         currentValues = []
                         #else:
                         #    raise ValueError("Error parsing valueset at line "+str(parsedLines))
 
-                        
                     # Otherwise we are at the end of a chunk defining an actual item (recode)
                     elif currentChunkType == 'Item':
                         if currentlyParsing == "Records":
-                            # apply the parent hierarchical labels, just stored in simple globals
-                            # info of the 
+                            # This is a "normal" line of the file, i.e. one recode or column of a table.
+                            # Apply the parent hierarchical labels, just stored in simple globals
                             chunkInfo['RecordName'] = currentRecordName
                             chunkInfo['RecordLabel'] = currentRecordLabel
                             chunkInfo['RecordTypeValue'] = currentRecordType.strip("'")
@@ -241,18 +243,20 @@ def parseDCF(self, dcfFile):
                                 chunkInfo['ZeroFill'] = currentSurveyZeroFill
                             if not 'DecimalChar' in chunkInfo:
                                 chunkInfo['DecimalChar'] = currentSurveyDecChar
-                            
                             # "save" the information to the output list
+                            chunkInfo['ItemType'] = 'Item'
                             myItems.append(chunkInfo)
                         elif currentlyParsing == "IdItems":
                             # this is a special case; it needs to be written out as an "item" for 
                             # each record. In the .dcf, IdItems comes after level info but before record 
                             # info. So save the info into dirty globals so that when we parse the record 
                             # info that follows we have access to it.
-                            currentIdName = chunkInfo['Name']
-                            currentIdLabel = chunkInfo['Label']
-                            currentIdStart = chunkInfo['Start']
-                            currentIdLength = chunkInfo['Len']
+                            currentIds.append({
+                                'Name':     chunkInfo['Name'],
+                                'Label':    chunkInfo['Label'],
+                                'Start':    chunkInfo['Start'],
+                                'Len':      chunkInfo['Len']
+                            })
             else:
                 # We are "within" a chunk of information
                 # add item key / value to the current chunk dictionary
@@ -345,9 +349,6 @@ def parseDCF(self, dcfFile):
                     # else save whatever we've got, presumably there is a value with no desc
                     else:
                         currentValues.append((fieldVal,valDesc.strip(), "ExplicitValue"))
-
-
-                    
 
                 elif not chunkInfo.has_key(fieldName):
                     # append the first occurrence of other labels. Subsequent ones will be silently discarded
