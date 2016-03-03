@@ -2,7 +2,7 @@ import re
 import os
 from difflib import SequenceMatcher as SM
 
-def parseDCF(dcfFile):
+def parseDCF(dcfFile, fileCode=None):
     '''
     Parse a .DCF file (CSPro dictionary specification) into a structured object
     
@@ -38,6 +38,9 @@ def parseDCF(dcfFile):
     currentRecordName = 'N/A'
     currentRecordLabel = 'N/A'
     currentRecordType = 'N/A'
+    
+    myRelationProcessor = RelationRowProcessor()
+    
     currentLevelName = ''
     currentLevelLabel = ''
     currentSurveyDecChar = False
@@ -52,12 +55,13 @@ def parseDCF(dcfFile):
     myRecords = {}
     myLevels = {}
     myItems = []
+    myRelations = []
     myCountries = {}
     mySkippedChunks = [] 
     
     # Get a unique reference code for this dcf file that should be entered into the output data. 
     # Would be cleaner / more general to accept this as a method parameter.
-    currentSurveyCode = os.path.extsep.join(os.path.basename(dcfFile).split(os.path.extsep)[:-1])
+    currentSurveyCode = fileCode or os.path.extsep.join(os.path.basename(dcfFile).split(os.path.extsep)[:-1])
     chunkInfo = {
         'FileCode':currentSurveyCode
     }
@@ -101,6 +105,11 @@ def parseDCF(dcfFile):
                 skippingChunk = False
                 recordTypeStart = 0
                 recordTypeLen = 0
+            elif line.find('[Relation]') != -1:
+                currentChunkType = "Relation"
+                currentlyParsing = "Relation"
+                skippingChunk = False
+                chunkInfo = {}
                 
             elif line.find('[') != -1 and line.find(']') != -1:
                 # This is some chunk we don't know and/or care about. 
@@ -228,6 +237,15 @@ def parseDCF(dcfFile):
                         #else:
                         #    raise ValueError("Error parsing valueset at line "+str(parsedLines))
 
+                    elif currentChunkType == 'Relation':
+                        relLink = myRelationProcessor.Emit()
+                        relLink['FileCode'] = currentSurveyCode
+                        #for relLink in chunkInfo['Relations']:
+                        #    relLink['RelName'] = currentRelationshipName
+                        #    relLink['PrimaryTable'] = currentRelationshipPrimary
+                        myRelations.append(relLink)
+                            
+                        
                     # Otherwise we are at the end of a chunk defining an actual item (recode)
                     elif currentChunkType == 'Item':
                         if currentlyParsing == "Records":
@@ -257,6 +275,7 @@ def parseDCF(dcfFile):
                                 'Start':    chunkInfo['Start'],
                                 'Len':      chunkInfo['Len']
                             })
+                       
             else:
                 # We are "within" a chunk of information
                 # add item key / value to the current chunk dictionary
@@ -267,7 +286,13 @@ def parseDCF(dcfFile):
                 fieldVal = line[splitPos+1:].strip()
                 #fieldName,fieldVal = line.split('=')
                 
-                if fieldName == 'Value':
+                if currentlyParsing == 'Relation':
+                    addResult = myRelationProcessor.AddRow(fieldName, fieldVal)
+                    if addResult is not None:
+                        addResult['FileCode'] = currentSurveyCode
+                        myRelations.append(addResult)
+                        
+                elif fieldName == 'Value':
                     # we don't explicitly check that we're in a valueset chunk, but we will be(?)
                     
                     # Look for a description first. Because if a description contains a time
@@ -354,4 +379,113 @@ def parseDCF(dcfFile):
                     # append the first occurrence of other labels. Subsequent ones will be silently discarded
                     chunkInfo[fieldName] = fieldVal 
         print "Parsed {0!s} lines into {1!s} items".format(parsedLines,len(myItems))
-        return myItems
+        return (myItems, myRelations)
+        
+        
+class RelationRowProcessor:
+    ''' Maintains state necessary for sequential processing of [Relation] rows in DCF dictionary files
+    
+    All other parts of the DCF file have blank-line-delimited sections each of which maps to a single 
+    row in our output flat specification files. However the [Relation] sections may encode the 
+    information pertaining to several specification output rows within a single block. We therefore 
+    need this class to maintain state while processing the block and generate output information at 
+    the appropriate points.
+    
+    Each block defines joins from a single primary (left) table to one or many secondary (right) 
+    tables. Each side of each join can be between a column or the row index, based on whether a 
+    primarylink and/or secondarylink row is given.
+    
+    So overall a DCF block will start with "Primary", there may be then be 1 or more repetitions of join-groups 
+    each of which consists of of (0/1 * PrimaryLink, 1* Secondary, 0/1 * SecondaryLink)
+    
+    Usage:
+    proc = RelationRowProcessor()
+    proc.AddRow("Name","TestRelation") # returns None
+    proc.AddRow("Primary", "RECH1") # None
+    proc.AddRow("Secondary", "RECH4") # None 
+    proc.AddRow("SecondaryLink", "IDXH4") # None
+    proc.AddRow("PrimaryLink", "HVIDX") # Returns the (occ)->item join specified over last 3 rows
+    proc.AddRow("Secondary", "RECML") # None
+    proc.AddRow("Secondary", "RECHMA") # Returns the item->(occ) join specified over last 2 rows
+    proc.Emit() # Returns the (occ)->(occ) join specified over the last row
+    
+    '''
+    def __init__(self):
+        self.RelationshipName = ""
+        self.PrimaryTable = ""
+        self.PrimaryLink = ""
+        self.SecondaryTable = ""
+        self.SecondaryLink = ""
+        
+    def __GetReturnObj__(self):
+        canEmit = True
+        if self.RelationshipName == "" or self.PrimaryTable == "" or self.SecondaryTable == "":
+            canEmit = False
+        if canEmit:
+            return {
+                "RelName"       : self.RelationshipName,
+                "PrimaryTable"  : self.PrimaryTable,
+                "SecondaryTable" : self.SecondaryTable,
+                "PrimaryLink"   : self.PrimaryLink if self.PrimaryLink != "" else "*ROWID*",
+                "SecondaryLink" : self.SecondaryLink if self.SecondaryLink != "" else "*ROWID*"
+            }
+        else:
+            return None
+    def AddRow(self, fieldname, fieldvalue):
+        ''' Adds a DCF file row defining part of a join and returns the join details if it's complete.
+        
+        When a row is added that that defines the start of a new join specification, then the details 
+        of the prior (now complete) join will be returned. The return will be None if the join is not
+        row added does not define the start of a new join. For the last join defined in a [Relation] 
+        block you will therefore need to force emitting the row with Emit().
+        '''
+        # the end of a join specification can be marked by:
+        # - SecondaryLink -> always
+        # - Secondary -> PrimaryLink
+        if fieldname == "Name":
+            if self.RelationshipName != "":
+                raise ValueError("Name is already set, data would be lost. Use Emit() first")
+            self.RelationshipName = fieldvalue
+            return
+        elif fieldname == "Primary":
+            # A block defines joins from a single primary table. If it's already set, then this implies 
+            # we haven't retrieved the last bit of info (using Emit()) of the last block.
+            if self.PrimaryTable != "":
+                raise ValueError("Primary Table is already set, data would be lost. Use Emit() first")
+            self.PrimaryTable = fieldvalue
+            return
+        elif fieldname == "PrimaryLink":
+            # This may be the start of the definition of a new join row, meaning that the prior (current) state 
+            # represents a complete join that should be returned. Or we may be defining the first 
+            # one.
+            returnObj = self.__GetReturnObj__()
+            self.PrimaryLink = fieldvalue
+            # if we get a new primarylink then any existing secondary and secondarylink info are obsoleted
+            self.SecondaryTable = ""
+            self.SecondaryLink = ""
+            return returnObj
+        elif fieldname == "Secondary":
+            # This may be the start of the definition of a new join row, meaning that the prior (current) state 
+            # represents a complete join that should be returned. Or we may be defining the first 
+            # one.
+            returnobj = self.__GetReturnObj__()
+            if self.SecondaryTable != "":
+                # this isn't the first secondary table since the last primary link row. In other words there was 
+                # one lot of PrimaryLink -> Secondary +- SecondaryLink, and now there is another Secondary;
+                # primarylink was not given and so we have just finished specifying an "occ" relationship on the primary side
+                # This means that we are onto a new relationship row, i.e. need to emit the info about the previous one.
+                self.PrimaryLink = ""
+            self.SecondaryTable = fieldvalue
+            # If we get a new Secondary table then any existing secondarylink info are obsoleted
+            self.SecondaryLink = ""
+            return returnobj
+        elif fieldname == "SecondaryLink":
+            self.SecondaryLink = fieldvalue
+        else:
+            raise ValueError("Unknown relationship specification tag "+fieldvalue)
+            
+    def Emit(self):
+        ''' Returns the join currently specified, if currently possible, and resets the processor '''
+        obj = self.__GetReturnObj__()
+        self.__init__()
+        return obj
