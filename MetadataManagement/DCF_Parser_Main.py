@@ -1,7 +1,7 @@
 import re
 import os
 from difflib import SequenceMatcher as SM
-
+from collections import defaultdict
 def parseDCF(dcfFile, fileCode=None):
     '''
     Parse a .DCF file (CSPro dictionary specification) into a structured object
@@ -378,6 +378,20 @@ def parseDCF(dcfFile, fileCode=None):
                 elif not chunkInfo.has_key(fieldName):
                     # append the first occurrence of other labels. Subsequent ones will be silently discarded
                     chunkInfo[fieldName] = fieldVal 
+        # For any columns that are mentioned in a relation, output them in the recordspec as being a joinable 
+        # column. We couldn't do this as we went along because the relations info is only parsed at the end.
+        allJoinCols = defaultdict(set)
+        for rel in myRelations:
+            if rel["PrimaryLink"] != "*ROWID*":
+                allJoinCols[rel["PrimaryTable"]].add(rel["PrimaryLink"])
+            if rel["SecondaryLink"] != "*ROWID*":
+                allJoinCols[rel["SecondaryTable"]].add(rel["SecondaryLink"])
+        for item in myItems:
+            if item['ItemType'] == 'Item':
+                if (item['RecordName'] in allJoinCols and 
+                    item['Name'] in allJoinCols[item['RecordName']]):
+                    item['ItemType'] = 'JoinableItem'
+        
         print "Parsed {0!s} lines into {1!s} items".format(parsedLines,len(myItems))
         return (myItems, myRelations)
         
