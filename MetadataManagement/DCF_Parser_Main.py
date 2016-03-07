@@ -34,6 +34,14 @@ def parseDCF(dcfFile, fileCode=None):
     global parsedLines
     parsedLines = 0
     
+    # if true then any valuesets where there are multiple ranges given will be expanded out to define each 
+    # value explicitly. This risks millions of rows in the output if the DCF specifies e.g.
+    # 0:12 Number of months
+    # 20 Bananas
+    # 100:9999998
+    # 9999999 I'm Stupid
+    EXPAND_MULTIPLE_RANGES = False
+    
     # within-survey "globals" i.e. things we need to keep track of between items
     currentRecordName = 'N/A'
     currentRecordLabel = 'N/A'
@@ -221,8 +229,12 @@ def parseDCF(dcfFile, fileCode=None):
                                     thisRangeMax = int(rangeInfo[1])
                                     thisRangeDesc = rangeInfo[2]
                                     assert thisRangeMax > thisRangeMin
-                                    for expandedVal in range(thisRangeMin, thisRangeMax+1):
-                                        currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
+                                    if EXPAND_MULTIPLE_RANGES:
+                                        for expandedVal in range(thisRangeMin, thisRangeMax+1):
+                                            currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
+                                    else:
+                                        currentValues.append((thisRangeMin, thisRangeDesc, "MultiRangeMin"))
+                                        currentValues.append((thisRangeMax, thisRangeDesc, "MultiRangeMax"))
                             else:
                                 rangeInfo = chunkInfo['ValueRanges'][0]
                                 currentValues.append((rangeInfo[0], rangeInfo[2], "RangeMin"))
