@@ -237,8 +237,9 @@ def parseDCF(dcfFile, fileCode=None):
                                 thisRangeDesc = rangeInfo[2]
                                 rangeSize = (thisRangeMax - thisRangeMin) + 1
                                 # break if something's wrong with the min / max intepretation
-                                assert rangeSize > 1
-                                if rangeSize <= RANGE_EXPANSION_THRESHOLD:
+                                if rangeSize <= 1:
+                                    raise ValueError("Error parsing range in file "+dcfFile+" at line "+str(parsedLines))
+                                if rangeSize <= RANGE_EXPANSION_LIMIT:
                                     if gotMultipleRanges:
                                         if (RANGE_EXPANSION_STRATEGY in ["All", "Multiple"]):
                                             for expandedVal in range(thisRangeMin, thisRangeMax+1):
@@ -342,7 +343,7 @@ def parseDCF(dcfFile, fileCode=None):
                     # match value ranges based on pattern "digits-colon-digits"
                     # Add these to a separate list of valueranges, because we will write them out differently
                     # depending on whether there is one or more than one range specified
-                    match = re.search('\d+:\d+', fieldVal)
+                    match = re.search('-?\d+:-?\d+', fieldVal)
                     if match:
                         try:
                             # the right hand side sometimes contains a description of the range values
@@ -356,7 +357,7 @@ def parseDCF(dcfFile, fileCode=None):
                             # again don't just split and unpack, in case there is a colon in the description too
                             # also sometimes we see multiple ranges on one line e.g. line 35629 of COIR53.DCF:
                             # 100:101 102:198;Days
-                            rangesOnLine = re.findall('\d+:\d+', fieldVal)
+                            rangesOnLine = re.findall('-?\d+:-?\d+', fieldVal)
                             for minmax in rangesOnLine:
                                 splitPos = minmax.find(':')
                                 vMin = minmax[0:splitPos].strip()
