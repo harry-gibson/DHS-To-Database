@@ -40,7 +40,10 @@ def parseDCF(dcfFile, fileCode=None):
     # 20 Bananas
     # 100:9999998
     # 9999999 I'm Stupid
-    EXPAND_MULTIPLE_RANGES = False
+    # Values can be "All", "Multiple", "None"
+    RANGE_EXPANSION_STRATEGY = "All"
+    # Add a safety flag so no one range gets expanded to more than this number of rows
+    RANGE_EXPANSION_LIMIT = 10000
     
     # within-survey "globals" i.e. things we need to keep track of between items
     currentRecordName = 'N/A'
@@ -221,25 +224,44 @@ def parseDCF(dcfFile, fileCode=None):
                                    format(parsedLines,dcfFile))
                         
                         if 'ValueRanges' in chunkInfo:
-                            # If there was more than one range then expand each out to the individual values
-                            # This occurs with something like 1:12=age in months, 13:112 = (age in years +12)
-                            if len(chunkInfo['ValueRanges']) > 1:
-                                for rangeInfo in chunkInfo['ValueRanges']:
-                                    thisRangeMin = int(rangeInfo[0])
-                                    thisRangeMax = int(rangeInfo[1])
-                                    thisRangeDesc = rangeInfo[2]
-                                    assert thisRangeMax > thisRangeMin
-                                    if EXPAND_MULTIPLE_RANGES:
-                                        for expandedVal in range(thisRangeMin, thisRangeMax+1):
-                                            currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
+                            # We can optionally expand each value range out to the individual values.
+                            # We are more likely to want to do this if there are multiple value ranges as this 
+                            # tends to imply different meanings for different ranges of values, e.g. 
+                            # 1:12=age in months, 13:112 = (age in years +12)
+                            # In either case we probably don't want to expand any huge ranges e.g. 10:9999998, as these 
+                            # would normally be a gap between real values 0-10 and a missing value 9999999.
+                            gotMultipleRanges = True if len(chunkInfo['ValueRanges']) > 1 else False
+                            for rangeInfo in chunkInfo['ValueRanges']:
+                                thisRangeMin = int(rangeInfo[0])
+                                thisRangeMax = int(rangeInfo[1])
+                                thisRangeDesc = rangeInfo[2]
+                                rangeSize = (thisRangeMax - thisRangeMin) + 1
+                                # break if something's wrong with the min / max intepretation
+                                assert rangeSize > 1
+                                if rangeSize <= RANGE_EXPANSION_THRESHOLD:
+                                    if gotMultipleRanges:
+                                        if (RANGE_EXPANSION_STRATEGY in ["All", "Multiple"]):
+                                            for expandedVal in range(thisRangeMin, thisRangeMax+1):
+                                                currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
+                                        else:
+                                            currentValues.append((thisRangeMin, thisRangeDesc, "MultiRangeMin"))
+                                            currentValues.append((thisRangeMax, thisRangeDesc, "MultiRangeMax"))
                                     else:
+                                        if RANGE_EXPANSION_STRATEGY == "All":
+                                            for expandedVal in range(thisRangeMin, thisRangeMax+1):
+                                                currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
+                                        else:
+                                            currentValues.append((thisRangeMin, thisRangeDesc, "RangeMin"))
+                                            currentValues.append((thisRangeMax, thisRangeDesc, "RangeMax"))
+                                else:
+                                    # this range is too big to expand even if we want to
+                                    if gotMultipleRanges:
                                         currentValues.append((thisRangeMin, thisRangeDesc, "MultiRangeMin"))
                                         currentValues.append((thisRangeMax, thisRangeDesc, "MultiRangeMax"))
-                            else:
-                                rangeInfo = chunkInfo['ValueRanges'][0]
-                                currentValues.append((rangeInfo[0], rangeInfo[2], "RangeMin"))
-                                currentValues.append((rangeInfo[1], rangeInfo[2], "RangeMax"))
-                               
+                                    else:
+                                        currentValues.append((thisRangeMin, thisRangeDesc, "RangeMin"))
+                                        currentValues.append((thisRangeMax, thisRangeDesc, "RangeMax"))
+                            
                         if myItems[-1].has_key('Values'):
                                 # occasionally items have two valueset chunks!
                             myItems[-1]['Values'].extend(currentValues)
