@@ -4,29 +4,46 @@ from difflib import SequenceMatcher as SM
 from collections import defaultdict
 def parseDCF(dcfFile, fileCode=None):
     '''
-    Parse a .DCF file (CSPro dictionary specification) into a structured object
+    Parse a .DCF file (CSPro dictionary specification) into a structured object.
     
-    The result is a list where each item is a dictionary that represents a "DHS Recode" 
-    i.e. column name in a given table.
+    Developed for use in particular with DCF files provided in the "hierarchical data" 
+    from DHS, but may be more generally applicable to CSPro format files.
+    Produces table and value specification files that can be used to parse and then 
+    interpret the values from the corresponding .DAT data files.
+    
+    The result is a 2-tuple. 
+    The first item of this is a list where each item is a dictionary that represents 
+    a "DHS Recode", i.e. the specification for one column in a given table.
     This dictionary is suitable for writing out to a CSV file.
     The item dictionary may have a "Values" key, whose value is itself a list of 
     dictionaries. Each of these subdictionaries represents a value that the associated 
     column can have (its value domain). The contents of the values key, if present, should be 
     written out to a separate CSV file.
     
-    For example:
-        schemafields = ['FileCode','RecordName','RecordTypeValue',
-                    'RecordLabel','Name','Label','Start','Len',
+    The second item in the result tuple is a similar list of dictionaries that represent the 
+    "relationships" defined in the file, i.e. the documented table joins that can be created.
+    Note, however, that this doesn't specify everything that's possible: for example the REC21 
+    child table can generally be joined to a record in the RECH1 household schedule table based 
+    on REC21.CASEID = RECH1.HHID and REC21.B16 = RECH1.HVIDX, but this is never actually specified!
+    
+    Usage example:
+        schemafields = ['ItemType', 'FileCode', 'RecordName', 'RecordTypeValue',
+                    'RecordLabel', 'Name', 'Label', 'Start', 'Len',
                     'Occurrences', 'ZeroFill', 'DecimalChar', 'Decimal']
-        valfields = ['FileCode','Name','Value','ValueDesc', 'ValueType']
-        res = parseDCF (dcfFileName)
-        for item in res:
+        valfields = ['FileCode', 'Name', 'Value', 'ValueDesc', 'ValueType']
+        relfields = ['FileCode', 'RelName', 'PrimaryTable', 'PrimaryLink', 
+                    'SecondaryTable', 'SecondaryLink']
+        parsedItems, parsedRelations = parseDCF (dcfFileName)
+        for item in parsedItems:
+            # outWriter is a csv writer you've set up with fieldnames as above
             outWriter.writerow([item[k]] if item.has_key[k] else '' for k in schemafields)
             if 'Values' in item and len(item['Values'] > 0):
                 vals = item['Values']
                 for val in vals:
                     valWriter.writerow([item['FileCode'], item['Name'], 
                                         val[0], val[1], val[2]])
+        for item in parsedRelations:
+            relWriter.writeRow([item[k] if item.has_key(k) else '' for k in relfieldnames])
     '''
     # We simply read the .DCF format file in line order, imputing the hierarchical structure from the order 
     # of things, i.e. the level and record of an item is the previous found level or record 
@@ -489,8 +506,8 @@ class RelationRowProcessor:
         block you will therefore need to force emitting the row with Emit().
         '''
         # the end of a join specification can be marked by:
-        # - SecondaryLink -> always
-        # - Secondary -> PrimaryLink
+        # - SecondaryLink -> always implies the end of a join
+        # - Secondary -> implies the end of a join if it is followed by PrimaryLink or blank
         if fieldname == "Name":
             if self.RelationshipName != "":
                 raise ValueError("Name is already set, data would be lost. Use Emit() first")
