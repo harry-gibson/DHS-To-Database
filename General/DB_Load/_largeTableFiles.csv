@@ -1,0 +1,15 @@
+table_name,surveyid,path_windows,qualtablename
+REC91,462,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\462.LSIR71.REC91.csv,dhs_data_tables.REC91
+RECH3,468,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\468.RWIR70.RECH3.csv,dhs_data_tables.RECH3
+REC91,493,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\493.KEIR7H.REC91.csv,dhs_data_tables.REC91
+REC94,468,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\468.RWIR70.REC94.csv,dhs_data_tables.REC94
+RECH3,462,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\462.LSIR71.RECH3.csv,dhs_data_tables.RECH3
+RECH3,493,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\493.KEIR7H.RECH3.csv,dhs_data_tables.RECH3
+REC95,468,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\468.RWIR70.REC95.csv,dhs_data_tables.REC95
+REC94,461,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\461.BDIR70.REC94.csv,dhs_data_tables.REC94
+REC95,461,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\461.BDIR70.REC95.csv,dhs_data_tables.REC95
+REC91,461,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\461.BDIR70.REC91.csv,dhs_data_tables.REC91
+RECH3,461,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\461.BDIR70.RECH3.csv,dhs_data_tables.RECH3
+REC94,462,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\462.LSIR71.REC94.csv,dhs_data_tables.REC94
+REC97,461,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\461.BDIR70.REC97.csv,dhs_data_tables.REC97
+REC91,468,\\map-fs1.ndph.ox.ac.uk\map_data\DHS_Automation\Acquisition\20160623_Updates\tables\468.RWIR70.REC91.csv,dhs_data_tables.REC91
