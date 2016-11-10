@@ -1,3 +1,6 @@
+# CSPro .DCF dictionary specification parser
+# For use with DHS hierarchical data
+# Harry Gibson 2015-2016
 import re
 import os
 from difflib import SequenceMatcher as SM
