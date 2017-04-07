@@ -253,24 +253,29 @@ def parseDCF(dcfFile, fileCode=None, expandRanges = "All"):
                             # would normally be a gap between real values 0-10 and a missing value 9999999.
                             gotMultipleRanges = True if len(chunkInfo['ValueRanges']) > 1 else False
                             for rangeInfo in chunkInfo['ValueRanges']:
-                                thisRangeMin = int(rangeInfo[0])
-                                thisRangeMax = int(rangeInfo[1])
-                                thisRangeDesc = rangeInfo[2]
-                                rangeSize = (thisRangeMax - thisRangeMin) + 1
+                                try:
+                                    thisRangeMin = float(rangeInfo[0])
+                                    thisRangeMax = float(rangeInfo[1])
+                                    thisRangeDesc = rangeInfo[2]
+                                    rangeSize = (thisRangeMax - thisRangeMin) + 1
+                                except:
+                                    print parsedLines
+                                    raise
+                                rangeIsInteger = thisRangeMin.is_integer() and thisRangeMax.is_integer()
                                 # break if something's wrong with the min / max intepretation
                                 if rangeSize <= 1:
                                     raise ValueError("Error parsing range in file "+dcfFile+" at line "+str(parsedLines))
                                 if rangeSize <= RANGE_EXPANSION_LIMIT:
                                     if gotMultipleRanges:
-                                        if (RANGE_EXPANSION_STRATEGY in ["All", "Multiple"]):
-                                            for expandedVal in range(thisRangeMin, thisRangeMax+1):
+                                        if (RANGE_EXPANSION_STRATEGY in ["All", "Multiple"]) and rangeIsInteger:
+                                            for expandedVal in range(int(thisRangeMin), int(thisRangeMax)+1):
                                                 currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
                                         else:
                                             currentValues.append((thisRangeMin, thisRangeDesc, "MultiRangeMin"))
                                             currentValues.append((thisRangeMax, thisRangeDesc, "MultiRangeMax"))
                                     else:
-                                        if RANGE_EXPANSION_STRATEGY == "All":
-                                            for expandedVal in range(thisRangeMin, thisRangeMax+1):
+                                        if RANGE_EXPANSION_STRATEGY == "All" and rangeIsInteger:
+                                            for expandedVal in range(int(thisRangeMin), int(thisRangeMax)+1):
                                                 currentValues.append((expandedVal, thisRangeDesc, "ExpandedRange"))
                                         else:
                                             currentValues.append((thisRangeMin, thisRangeDesc, "RangeMin"))
@@ -378,11 +383,14 @@ def parseDCF(dcfFile, fileCode=None, expandRanges = "All"):
                             # again don't just split and unpack, in case there is a colon in the description too
                             # also sometimes we see multiple ranges on one line e.g. line 35629 of COIR53.DCF:
                             # 100:101 102:198;Days
-                            rangesOnLine = re.findall('-?\d+:-?\d+', fieldVal)
+                            # rangesOnLine = re.findall('-?\d+:-?\d+', fieldVal)
+                            rangesOnLine = re.findall('(-?[0-9]+([.][0-9]+)?)\:(-?[0-9]+([.][0-9]+)?)', fieldVal)
                             for minmax in rangesOnLine:
-                                splitPos = minmax.find(':')
-                                vMin = minmax[0:splitPos].strip()
-                                vMax = minmax[splitPos+1:].strip()
+                                vMin = minmax[0]
+                                vMax = minmax[2]
+                                #splitPos = minmax.find(':')
+                                #vMin = minmax[0:splitPos].strip()
+                                #vMax = minmax[splitPos+1:].strip()
                                 if not 'ValueRanges' in chunkInfo:
                                     chunkInfo['ValueRanges'] = []
                                 chunkInfo['ValueRanges'].append((vMin, vMax, valDesc.strip()))
