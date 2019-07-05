@@ -222,3 +222,4 @@ pip-log.txt
 *.log
 *.ffs
 *.recover
+DHS_Preprocess_And_Ingestion/09_Get_Polygon_Data/Polygon_Data_SDR_Scrape/sdr_subnational_boundaries_2019-02-06.zip

@@ -1,0 +1,3 @@
+These files relate to loading DHS survey metadata to the more complex / abstracted relational structure for the survey _metadata_ that Mike started to develop but which was subsequently abandoned in favour of the approach in DHS_Preprocess_And_Ingestion and which is documented in the MAP wiki.
+
+(Basically they are, so far as I can remember, different versions of a workbench that called the DCF_Parser code then loads it to a complicated structure. Now we just use a simple loop in a notebook to call the code and then load the results to a flat pair of tables. )
