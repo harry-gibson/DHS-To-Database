@@ -1,0 +1,1 @@
+Stage contains a jupyter notebook with some simple code to unzip the contents of downloaded DHS surveys and extract the numeric survey id from the zip filename or folder (you must add it first) and apply it to all the extracted files.

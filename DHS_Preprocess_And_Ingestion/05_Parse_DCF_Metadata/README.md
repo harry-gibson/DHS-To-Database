@@ -5,5 +5,5 @@ This directory contains code to extract schema information from the .DCF CSPro f
 
 The main code to parse a DCF file is in DCF_Parser_Main.py.
 
-This can be called either from an IPython notebook (DCF_Parser.ipynb) or from an FME workbench (import_dhs_survey_metadata_from_dcfs.fmw)
+This can be called either from an IPython notebook (DCF_Parser.ipynb) or from an FME workbench (import_dhs_survey_metadata_from_dcfs.fmw, available in the Archived_Approaches folder of this repo)
 
