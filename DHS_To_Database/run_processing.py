@@ -96,5 +96,5 @@ def run(download_urls_list, staging_folder, parse_dcfs=False, parse_data=False):
             parse_dat_file(dat_file, spec_file, parsed_data_folder)
 
 
-if __name__ == '__main__':
-    run(r"C:\Users\zool1301\Documents\Data\DHS\dhs_hierarchical\download_urls.txt", r"C:\Users\zool1301\Documents\Data\DHS\staging", False, True)
+#if __name__ == '__main__':
+#    run(r"D:\InformalCities\DHS\dhs_hierarchical\download_urls.txt", r"D:\InformalCities\DHS\staging", False, False)
