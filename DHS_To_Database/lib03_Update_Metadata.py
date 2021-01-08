@@ -35,8 +35,8 @@ class SurveyMetadataHelper:
         self._TABLE_SPEC_TABLENAME = table_spec_table
         self._VALUE_SPEC_TABLENAME = value_spec_table
         self._SPEC_SCHEMA = spec_schema
-        self._TABLE_SPEC_TABLE = ".".join(spec_schema, table_spec_table)
-        self._VALUE_SPEC_TABLE = ".".join(spec_schema, value_spec_table)
+        self._TABLE_SPEC_TABLE = ".".join([spec_schema, table_spec_table])
+        self._VALUE_SPEC_TABLE = ".".join([spec_schema, value_spec_table])
         self._is_dry_run = dry_run
 
     def get_existing_table_surveys(self):
@@ -49,11 +49,11 @@ class SurveyMetadataHelper:
 
 
     def get_db_survey_version_vals(self, surveyid, file_type):
-        return _get_db_survey_version(surveyid, file_type, self._TABLE_SPEC_TABLE)
+        return self._get_db_survey_version(surveyid, file_type, self._TABLE_SPEC_TABLE)
     
 
     def get_db_survey_version_cols(self, surveyid, file_type):
-        return _get_db_survey_version(surveyid, file_type, self._VALUE_SPEC_TABLE)
+        return self._get_db_survey_version(surveyid, file_type, self._VALUE_SPEC_TABLE)
 
 
     def _get_db_survey_version(self, surveyid, file_type, search_table):
@@ -74,11 +74,11 @@ class SurveyMetadataHelper:
 
 
     def get_any_in_db_cols(self, surveyid, file_type):
-        return _get_any_in_db(surveyid, file_type, self._TABLE_SPEC_TABLE)
+        return self._get_any_in_db(surveyid, file_type, self._TABLE_SPEC_TABLE)
 
 
     def get_any_in_db_vals(self, surveyid, file_type):
-        return _get_any_in_db(surveyid, file_type, self._VALUE_SPEC_TABLE)
+        return self._get_any_in_db(surveyid, file_type, self._VALUE_SPEC_TABLE)
 
 
     def _get_any_in_db(self, surveyid, file_type, qual_table):
@@ -111,13 +111,13 @@ class SurveyMetadataHelper:
         return False
 
 
-    def file_is_cols_or_vals(tbl_fn):
+    def file_is_cols_or_vals(self, tbl_fn):
         cols_or_vals = "COLS" if "FlatRecordSpec" in tbl_fn else "VALS"
         return cols_or_vals
 
 
-    def load_new_metadata_file(self, tbl_fn)
-        if file_is_cols_or_vals(tbl_fn) == "COLS":
+    def load_new_metadata_file(self, tbl_fn):
+        if self.file_is_cols_or_vals(tbl_fn) == "COLS":
             self.load_new_table_file(tbl_fn)
         else:
             self.load_new_values_file(tbl_fn)
@@ -171,8 +171,8 @@ class SurveyMetadataHelper:
             for c in file_data.columns:
                 if c not in DB_VALUESPEC_COLS:
                     del(file_data[c])
-            check_destination_col_widths(file_data, 
-                schema_name=SPEC_SCHEMA, table_name=self._VALUE_SPEC_TABLENAME)
+            self.check_destination_col_widths(file_data, 
+                schema_name=self._SPEC_SCHEMA, table_name=self._VALUE_SPEC_TABLENAME)
             file_data.to_sql(name=self._VALUE_SPEC_TABLENAME, con=self._engine, 
                 schema=self._SPEC_SCHEMA, index=False,
                 if_exists='append', method='multi')
