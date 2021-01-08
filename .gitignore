@@ -217,6 +217,8 @@ pip-log.txt
 
 # Ipython checkpoints
 .ipynb_checkpoints/
+ 
+dhs_env/
 
 #FME
 *.log

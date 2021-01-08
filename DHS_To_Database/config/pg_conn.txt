@@ -1,0 +1,2 @@
+host=map3238_1 dbname=dhs_data_pit port=25432 user=admin password=w7csAcKBvMeXZwfUfZcC
+postgresql://admin:w7csAcKBvMeXZwfUfZcC@map3238_1:25432/dhs_data_pit

@@ -1,6 +1,6 @@
 import os
-import glob
 import zipfile
+import re, fnmatch
 
 from cspro_parser.DCF_Parser import DCF_Parser
 from cspro_parser.DAT_Parser import parse_dat_file
@@ -29,6 +29,7 @@ def unzip_and_sort(zip_path, survey_num, out_folder):
             output_files.append(unzipped_fn_path)
     return output_files
 
+
 def parse_download_spec(download_urls_file):
     """Parse the text file of download URLs provided by the DHS download manager to extract
     the downloaded filename and the numerical survey id it corresponds to, return dictionary
@@ -44,12 +45,20 @@ def parse_download_spec(download_urls_file):
             results[filename] = survey_num
     return results
 
-def organise(download_urls_list, staging_folder):
+
+def organise_batch_downloaded(download_urls_list, staging_folder):
+    
     survey_num_mapping = parse_download_spec(download_urls_list)
 
     downloaded_files_folder = os.path.dirname(download_urls_list)
     extracted_files_folder_root = os.path.join(staging_folder, "downloaded")
-    in_files = glob.glob(os.path.join(downloaded_files_folder, "*.zip"))
+    
+    all_files = [i for i in os.listdir(downloaded_files_folder) 
+        if os.path.isfile(os.path.join(downloaded_files_folder, i))]
+    regex = re.compile(fnmatch.translate('*.zip'), re.IGNORECASE)
+    in_files = [os.path.join(downloaded_files_folder, j) for j in all_files if re.match(regex, j)]
+    # need to be case insensitive https://stackoverflow.com/a/12213141
+    #in_files = glob.glob(os.path.join(downloaded_files_folder, "*.zip"))
 
     all_unzipped_files = []
     for f in in_files:
@@ -66,10 +75,29 @@ def organise(download_urls_list, staging_folder):
         print(f"{m} has not been downloaded, skipping")
     return all_unzipped_files
 
+def organise_manual_downloaded(downloaded_files_folder, staging_folder):
+    all_files = [i for i in os.listdir(downloaded_files_folder) 
+        if os.path.isfile(os.path.join(downloaded_files_folder, i))]
+    regex = re.compile(fnmatch.translate('*.zip'), re.IGNORECASE)
+    in_files = [os.path.join(downloaded_files_folder, j) for j in all_files if re.match(regex, j)]
+    #in_files = glob.glob(os.path.join(downloaded_files_folder, "*.ZIP"))
+    all_unzipped_files = []
+    extracted_files_folder_root = os.path.join(staging_folder, "downloaded")
+    for f in in_files:
+        filename = os.path.basename(f)
+        survey_num = filename.split(".")[0]
+        unzipped_files = unzip_and_sort(f, survey_num, extracted_files_folder_root)
+        all_unzipped_files.extend(unzipped_files)
+    return all_unzipped_files
+
+
 get_filecode = lambda filename:os.path.extsep.join(os.path.basename(filename).split(os.path.extsep)[:-1])
 
-def run(download_urls_list, staging_folder, parse_dcfs=False, parse_data=False):
-    unzipped = organise(download_urls_list, staging_folder)
+def run(downloads_file_or_folder, staging_folder, parse_dcfs=False, parse_data=False):
+    if os.path.isfile(downloads_file_or_folder):
+        unzipped = organise_batch_downloaded(downloads_file_or_folder, staging_folder)
+    else:
+        unzipped = organise_manual_downloaded(downloads_file_or_folder, staging_folder)
     dcf_files = [f for f in unzipped if f.lower().endswith('.dcf')]
     dat_files = [f for f in unzipped if f.lower().endswith('.dat')]
     parsed_spec_folder = os.path.join(staging_folder, "parsed_specs")
@@ -96,5 +124,6 @@ def run(download_urls_list, staging_folder, parse_dcfs=False, parse_data=False):
             parse_dat_file(dat_file, spec_file, parsed_data_folder)
 
 
-#if __name__ == '__main__':
-#    run(r"D:\InformalCities\DHS\dhs_hierarchical\download_urls.txt", r"D:\InformalCities\DHS\staging", False, False)
+if __name__ == '__main__':
+    #run(r"D:\InformalCities\DHS\dhs_hierarchical\download_urls.txt", r"D:\InformalCities\DHS\staging", False, False)
+    run("/mnt/d/InformalCities/DHS_Updates/staging/downloaded", "/mnt/d/InformalCities/DHS_Updates/staging/downloaded", True, True)
