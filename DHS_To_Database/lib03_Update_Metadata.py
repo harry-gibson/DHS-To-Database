@@ -1,5 +1,6 @@
 from collections import defaultdict
 from sqlalchemy import create_engine, and_, or_
+import sqlalchemy as sa
 import pandas as pd
 import warnings
 import os
@@ -49,11 +50,11 @@ class SurveyMetadataHelper:
 
 
     def get_db_survey_version_vals(self, surveyid, file_type):
-        return self._get_db_survey_version(surveyid, file_type, self._TABLE_SPEC_TABLE)
+        return self._get_db_survey_version(surveyid, file_type, self._VALUE_SPEC_TABLE)
     
 
     def get_db_survey_version_cols(self, surveyid, file_type):
-        return self._get_db_survey_version(surveyid, file_type, self._VALUE_SPEC_TABLE)
+        return self._get_db_survey_version(surveyid, file_type, self._TABLE_SPEC_TABLE)
 
 
     def _get_db_survey_version(self, surveyid, file_type, search_table):
@@ -207,16 +208,17 @@ class SurveyMetadataHelper:
 
     def drop_and_reload(self, tbl_fn, msg="unknown reason"):
         surveyid, loc, file_type, version = parse_survey_info(tbl_fn)
-        if self.file_is_cols_or_vals(tbl_fn) == "COLS":
+        cols_or_vals = self.file_is_cols_or_vals(tbl_fn) 
+        if cols_or_vals == "COLS":
             dest = self._TABLE_SPEC_TABLENAME
         else:
             dest = self._VALUE_SPEC_TABLENAME
         if self._is_dry_run:
             print(f"""Would drop and reload rows from {dest} for survey {surveyid}, filetype {file_type}, 
-                from file {file_name}, reason: {msg}""")
+                from file {tbl_fn}, reason: {msg}""")
         else:
             print(f"""Dropping and reloading rows from {dest} for survey {surveyid}, filetype {file_type}, 
-                from file {file_name}, reason: {msg}""")
+                from file {tbl_fn}, reason: {msg}""")
             if cols_or_vals == "COLS":
                 self.delete_table_col_entries_for_svy_filetype(surveyid, file_type)
                 self.load_new_table_file(tbl_fn)
@@ -264,5 +266,6 @@ class SurveyMetadataHelper:
             SELECT col_name, value, value_desc, value_type, filecode
             FROM {self._VALUE_SPEC_TABLE}
             WHERE surveyid = '{surveyid}' 
-            AND filecode ILIKE '%{file_type}%'
+            AND filecode ILIKE '%{filetype}%'
             ;''', con=self._engine)
+        return db_vals_data
