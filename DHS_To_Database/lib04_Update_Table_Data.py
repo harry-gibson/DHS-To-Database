@@ -343,7 +343,8 @@ class TableDataHelper:
         data_cols_present = pd.read_sql(f"""
             SELECT table_name, column_name, data_type 
             FROM information_schema.columns 
-            WHERE table_schema = '{self._DATA_SCHEMA}' ORDER BY table_name, column_name""", 
+            WHERE table_schema = '{self._DATA_SCHEMA}' AND table_name='{table_name}' 
+            ORDER BY table_name, column_name""", 
             con=self._engine)
         
         data_cols_not_present = data_cols_needed[~data_cols_needed['name'].isin(
@@ -368,7 +369,7 @@ class TableDataHelper:
 
     def _load_file_to_standard_table(self, table_filename, use_bulk_copy=True):
         surveyid, _, file_type, _, table_name = TableDataHelper.parse_table_name(table_filename)
-        file_data = pd.read_csv(table_filename)
+        file_data = pd.read_csv(table_filename, dtype=str).fillna('')
         file_data.columns = file_data.columns.str.lower()
         file_data['surveyid'] = surveyid
         if self._is_dry_run:
@@ -386,7 +387,8 @@ class TableDataHelper:
                     {self._DATA_SCHEMA}."{table_name}" using BULK COPY''')
                 buffer = io.StringIO()
                 file_data.to_csv(buffer, sep='\t', header=False, index=False)
-                qual_table = self._DATA_SCHEMA + "." + table_name
+                buffer.seek(0)
+                qual_table = self._DATA_SCHEMA + '.' + '"' + table_name + '"'
                 conn = self._engine.raw_connection()
                 cursor = conn.cursor()
                 cursor.copy_from(buffer, qual_table, sep='\t', columns=list(file_data.columns))
@@ -416,13 +418,13 @@ class TableDataHelper:
         # convert all EXCEPT the columns with "id" in the name to a single JSON column
         # To do this, set the id columns to be the dataframe's index just to "hide" them 
         # from the to_dict conversion, then reset the index afterwards
-        file_data.set_index([c for c in file_data.columns if 'id' in c], inplace=True)
+        file_data.set_index([c for c in file_data.columns if self._col_shld_be_firstclass(c)], inplace=True)
         # use the built-in to_dict function to pack each row into a python dictionary and 
         # save it into a new column called 'data'
         file_data['data'] = file_data.to_dict('records')
         # keep only this new column (plus the "hidden" index ones)
         file_data = file_data[['data']]
-        file_data.reset_index()
+        file_data = file_data.reset_index()
         # type of data column is now a python dictionary
         # type(test['data'].iloc[0]) == dict
         # https://stackoverflow.com/a/50825030
@@ -446,8 +448,9 @@ class TableDataHelper:
                 print(f'''Inserting data from {os.path.basename(table_filename)} to 
                 JSON table {self._DATA_SCHEMA}."{table_name}" using BULK COPY''')
                 buffer = io.StringIO()
-                file_data.to_csv(buffer, sep='\t', header=False, index=False)
-                qual_table = self._DATA_SCHEMA + "." + table_name
+                file_data.to_csv(buffer, sep='\t', quoting=csv.QUOTE_NONE, quotechar='', header=False, index=False)
+                buffer.seek(0)
+                qual_table = self._DATA_SCHEMA + '.' + '"'+table_name+'"'
                 conn = self._engine.raw_connection()
                 cursor = conn.cursor()
                 cursor.copy_from(buffer, qual_table, sep='\t', columns=list(file_data.columns))
@@ -473,10 +476,10 @@ class TableDataHelper:
         return self.get_db_survey_table_rowcount(surveyid, tablename) > 0
 
 
-    def get_db_survey_table_rowcount(self, surveyid, tablename):
+    def get_db_survey_table_rowcount(self, surveyid, table_name):
         _sql = f"""SELECT count(*) nrows_db FROM {self._DATA_SCHEMA}."{table_name}"
-            WHERE surveyid={surveyid}"""
-        return self._engine.execute(sql).fetchone()[0]
+            WHERE surveyid='{surveyid}'"""
+        return self._engine.execute(_sql).fetchone()[0]
 
 
     def list_modified_tables(self):
