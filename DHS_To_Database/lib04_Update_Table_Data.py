@@ -369,7 +369,7 @@ class TableDataHelper:
 
     def _load_file_to_standard_table(self, table_filename, use_bulk_copy=True):
         surveyid, _, file_type, _, table_name = TableDataHelper.parse_table_name(table_filename)
-        file_data = pd.read_csv(table_filename, dtype=str).fillna('')
+        file_data = pd.read_csv(table_filename, dtype=str)#.fillna('')
         file_data.columns = file_data.columns.str.lower()
         file_data['surveyid'] = surveyid
         if self._is_dry_run:
@@ -391,7 +391,7 @@ class TableDataHelper:
                 qual_table = self._DATA_SCHEMA + '.' + '"' + table_name + '"'
                 conn = self._engine.raw_connection()
                 cursor = conn.cursor()
-                cursor.copy_from(buffer, qual_table, sep='\t', columns=list(file_data.columns))
+                cursor.copy_from(buffer, qual_table, sep='\t', null='', columns=list(file_data.columns))
                 conn.commit()
                 cursor.close()
             else:
