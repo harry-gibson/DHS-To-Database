@@ -4,6 +4,7 @@ import sqlalchemy as sa
 import pandas as pd
 import warnings
 import os
+import io
 
 DB_TABLESPEC_COLS = ['itemtype', 'recordname', 'recordtypevalue', 'recordlabel', 'name',
        'label', 'start', 'len', 'fmetype', 'surveyid', 'id', 'filecode']
@@ -211,7 +212,7 @@ class SurveyMetadataHelper:
                 if_exists='append', method='multi')
 
 
-    def load_new_values_file(self, val_fn):
+    def load_new_values_file(self, val_fn, use_bulk_copy=True):
         """Load a dhs values description CSV to the database valuespec table, 
         renaming columns to match the schema and splitting the filecode into numeric 
         and original parts"""
@@ -231,10 +232,22 @@ class SurveyMetadataHelper:
         if self._is_dry_run:
             print(f"Would insert {os.path.basename(val_fn)} to {self._VALUE_SPEC_TABLE}")
         else:
-            print(f"Inserting {os.path.basename(val_fn)} to {self._VALUE_SPEC_TABLE}") 
-            file_data.to_sql(name=self._VALUE_SPEC_TABLENAME, con=self._engine, 
-                schema=self._SPEC_SCHEMA, index=False,
-                if_exists='append', method='multi')
+            if use_bulk_copy:
+                print(f"Inserting {os.path.basename(val_fn)} to {self._VALUE_SPEC_TABLE} using BULK COPY") 
+                buffer = io.StringIO()
+                file_data.to_csv(buffer, sep='\t', header=False, index=False)
+                buffer.seek(0)
+                qual_table=self._VALUE_SPEC_TABLE
+                conn = self._engine.raw_connection()
+                cursor = conn.cursor()
+                cursor.copy_from(buffer, qual_table, sep='\t', columns=list(file_data.columns))
+                conn.commit()
+                cursor.close()
+            else:
+                print(f"Inserting {os.path.basename(val_fn)} to {self._VALUE_SPEC_TABLE}") 
+                file_data.to_sql(name=self._VALUE_SPEC_TABLENAME, con=self._engine, 
+                    schema=self._SPEC_SCHEMA, index=False,
+                    if_exists='append', method='multi')
 
 
     def _check_column_widths_from_df(self, df, table_name):
@@ -250,7 +263,7 @@ class SurveyMetadataHelper:
         obj_cols = df.select_dtypes(include=['object']).columns
         lengths = {col:(df[col].str.len().max()) for col in obj_cols}
         for col, incoming_length in lengths.items():
-            self.check_and_update_column_width(table_name, col, incoming_length, True)
+            self._check_and_update_column_width(table_name, col, incoming_length)
 
 
     def _check_and_update_column_width(self, table_name, column_name, req_width):
@@ -261,7 +274,7 @@ class SurveyMetadataHelper:
             SELECT character_maximum_length as maxlen 
             FROM information_schema.columns 
             WHERE 
-                table_schema = {self._SPEC_SCHEMA} 
+                table_schema = '{self._SPEC_SCHEMA}' 
             AND table_name = '{table_name}' 
             AND column_name = '{column_name}';"""
         , con=self._engine)
