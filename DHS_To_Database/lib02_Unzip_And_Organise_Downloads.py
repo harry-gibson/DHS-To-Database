@@ -75,6 +75,7 @@ def organise_batch_downloaded(download_urls_list, staging_folder):
         print(f"{m} has not been downloaded, skipping")
     return all_unzipped_files
 
+
 def organise_manual_downloaded(downloaded_files_folder, staging_folder):
     all_files = [i for i in os.listdir(downloaded_files_folder) 
         if os.path.isfile(os.path.join(downloaded_files_folder, i))]

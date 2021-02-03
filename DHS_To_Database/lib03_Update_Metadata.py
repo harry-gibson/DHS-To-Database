@@ -11,27 +11,46 @@ DB_TABLESPEC_COLS = ['itemtype', 'recordname', 'recordtypevalue', 'recordlabel',
 DB_VALUESPEC_COLS = ['col_name', 'value', 'value_desc', 'value_type', 'surveyid', 'id',
        'filecode']
 
-def parse_survey_info(filename):
-    """"For a path to a parsed FlatRecordSpec file, return a tuple of the 
-    (survey_number, country_code, file_data_type, survey_version)
-    e.g. /path/to/511.CMMR71.FlatValuesSpec -> (511, 'CM', 'MR', '71')"""
-    surveyid, code, _, _ = os.path.basename(filename).split('.')
-    loc = code[0:2].lower()
-    filetype = code[2:4].lower()
-    version = code[4:]
-    return surveyid, loc, filetype, version
-    #return os.path.basename(filename).split('.')[0]
-
-def build_spec_files_dict(tablefiles_list):
-    tbl_files_dict = defaultdict(lambda:defaultdict(list))
-    for f in tablefiles_list: 
-        svy_id, loc, filetype, version = parse_survey_info(f)
-        tbl_files_dict[svy_id][filetype].append((f, version, loc))
-    return tbl_files_dict
-
 
 class SurveyMetadataHelper:
-    
+
+
+    @staticmethod
+    def parse_survey_info(filename):
+        """For a path to a parsed FlatRecordSpec or FlatValuesSpec file, return a 
+        tuple of the 
+        (survey_number, country_code, file_data_type, survey_version)
+        e.g. /path/to/511.CMMR71.FlatValuesSpec -> (511, 'CM', 'MR', '71')"""
+        surveyid, code, _, _ = os.path.basename(filename).split('.')
+        loc = code[0:2].lower()
+        filetype = code[2:4].lower()
+        version = code[4:]
+        return surveyid, loc, filetype, version
+        #return os.path.basename(filename).split('.')[0]
+
+
+    @staticmethod
+    def build_spec_files_dict(tablefiles_list):
+        """From a list of parsed tablespec or valuespec files, creates a 
+        nested dictionary structure in the form
+        {surveyid: {
+            filetype: [
+                (filename, version, location)
+                ]
+            }
+        }
+        The lists at the leaves should contain  exactly one 3-tuple member, 
+        unless there is more than one file present for a given survey and filetype(IR/MR) 
+        which can happen if there are multiple versions,  but should not happen 
+        for any other reason (such as multiple locations)
+        """
+        tbl_files_dict = defaultdict(lambda:defaultdict(list))
+        for f in tablefiles_list: 
+            svy_id, loc, filetype, version = SurveyMetadataHelper.parse_survey_info(f)
+            tbl_files_dict[svy_id][filetype].append((f, version, loc))
+        return tbl_files_dict
+
+     
     def __init__(self, conn_str, table_spec_table, value_spec_table, spec_schema, dry_run=True):
         self._engine = create_engine(conn_str)
         self._TABLE_SPEC_TABLENAME = table_spec_table
@@ -82,6 +101,7 @@ class SurveyMetadataHelper:
             AND filecode ILIKE '%{filetype}%'
             ;''', con=self._engine)
         return db_vals_data
+
 
     def get_db_survey_version_vals(self, surveyid, file_type):
         """Get the most recent version present in the value descriptions metadata 
@@ -256,7 +276,8 @@ class SurveyMetadataHelper:
         
         For use when there is no metadata available to tell us what the maximum width should 
         be across ALL surveys, rather than just this one CSV/dataframe. Specifically, for 
-        adjusting the metadata tables themselves when loading the metdata CSVs. 
+        adjusting the metadata tables themselves when loading the metdata CSVs; most likely 
+        if dhs_table_specs_flat.label or dhs_value_descs.value_desc contain a long description.
         
         See _check_column_widths_from_metadata in lib04 for an equivalent check spanning 
         the whole survey corpus based on the metadata tables, for use when loading data."""
@@ -295,8 +316,8 @@ class SurveyMetadataHelper:
     def drop_and_reload(self, tbl_fn, msg="unknown reason"):
         """For a given metadata CSV, drops all metadata for that surveyid and filetype (IR/MR) 
         (for any version) and then reloads the file contents."""
-        surveyid, _, file_type, _ = parse_survey_info(tbl_fn)
-        cols_or_vals = self.file_is_cols_or_vals(tbl_fn) 
+        surveyid, _, file_type, _ = SurveyMetadataHelper.parse_survey_info(tbl_fn)
+        cols_or_vals = self._file_is_cols_or_vals(tbl_fn) 
         if cols_or_vals == "COLS":
             dest = self._TABLE_SPEC_TABLENAME
         else:
