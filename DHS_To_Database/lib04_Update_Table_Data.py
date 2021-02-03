@@ -22,6 +22,7 @@ class TableDataHelper:
         version = code[4:]
         return surveyid, loc, filetype, version, tablename
         
+
     def __init__(self, conn_str, 
         table_spec_table, value_spec_table, spec_schema,
         data_schema, dry_run=True):
@@ -66,6 +67,13 @@ class TableDataHelper:
 
 
     def prepare_db_for_file(self, table_name):
+        """Ensures that the database table specified exists, contains all the necessary columns, and 
+        that the columns are all wide enough. 
+        
+        The checks are made relative to the metadata table, and  so these must be fully populated 
+        first (in stage 3). Once this is so, these checks only have to be run once for each destination
+        table so we cache the tablenames we check and don't repeat them in the lifetime of this object.
+        """
         if not table_name in self._verified_tables:
             if not self._does_data_table_exist(table_name):
                 self.create_data_table(table_name)
@@ -77,15 +85,24 @@ class TableDataHelper:
     def create_data_table(self, table_name):
         """Creates a data table with all the columns that are currently specified in the metadata.
         
+        Table will be owned by user `admin`. Indexes will be created on the columns typically 
+        used in filtering/joining the table.
+
         As throughout this software, all columns are created with VARCHAR(n) type where n = the 
         maximum width currently specified for that table/column in any survey
         
+        (I don't know if there's actually any good reason for not just using VARCHAR (no width) columns,
+        which would certainly avoid a bit of faff. )
+
         The exception if there are more than TableDataHelper._MAX_COLUMN_THRESHOLD columns 
         specified in the metadata, in which case only columns believed to be indexes will be 
         first-class columns, and a jsonb column named data will be added for storing the remainder."""
+        
         # Note that were we just loading one single CSV we could do something like this to initialize 
-        # the table.
-        #  df[:0].to_sql(table, engine, if_exists=if_exists)
+        # the table. This logic is all necessary to support creating a table that contains the unioned set 
+        # columns from many CSVs (surveys).
+        #  df[:0].to_sql(table, engine, if_e xists=if_exists)
+        
         column_clauses, is_json = self._get_column_clauses(table_name)
         create_stmt = f"""
             CREATE TABLE {self._DATA_SCHEMA}."{table_name}"({column_clauses})
@@ -105,17 +122,25 @@ class TableDataHelper:
         
 
     def _col_shld_be_firstclass(self, col_name):
+        """Attempts to divine whether a given column name is likely to be used in 
+        filtering/joining a table, and thus should be indexed, and/or left as a first-class
+        column in a JSON table."""
         _c = col_name.lower()
-        if (("idx" in _c) or (_c.startswith("ix")) # or (_c.endswith("id"))):
+        if (("idx" in _c) or (_c.startswith("ix")) 
+            # or (_c.endswith("id"))): # not this, too many false positives
             or _c in(['surveyid','caseid','mcaseid','hhid'])):
-            # TODO check label as well, has to say "index" or "line number"
-            # e.g. 'idx94', 'ixh4', 'surveyid','caseid','mcaseid','hhid',
-            # but not e.g. 'shidioma'
+            # TODO maybe it'd be nicer to check label as well, has to say "index"
+            #  or "line number" e.g. 'idx94', 'ixh4', 'surveyid','caseid','mcaseid','hhid',
+            # but not e.g. 'shidioma'. This would allow us to pick up edge cases like 
+            # REC21.B16
             return True
         return False
 
 
     def _table_should_be_json(self, table_name, n_cols):
+        """Decrees whether a table should be stored as JSON, based on whether it would have a 
+        crazy number of columns or whether it is country-specific (and thus will probably end up 
+        having a c-n-o-c)"""
         if n_cols > TableDataHelper._MAX_COLUMN_THRESHOLD:
             return True
         is_cs =  pd.read_sql(f"""
@@ -130,8 +155,10 @@ class TableDataHelper:
     def _get_column_clauses(self, table_name):
         """Gets the columns that a new data table should have, according to the metadata tables.
         
-        Returns them as a string for use in a statement of the form 
-        CREATE TABLE tablename (result) """
+        Returns them as a string SQL fragment for use in a statement of the form 
+        CREATE TABLE tablename (result).
+        
+        Handles the case where the table's main data content should be stored as a JSONB column."""
         
         # list all columns that are specified for this datatable in the survey metadata (unioned 
         # set across all surveys: not all surveys will have all columns)
@@ -323,7 +350,7 @@ class TableDataHelper:
         is_json = table_name in self._json_tables
 
         if is_json:
-            # we only need the indexing columns to be present
+            # we only need the indexing columns to be present, plus a column called 'data'
             data_cols_needed = pd.read_sql(f"""
                 SELECT LOWER(name) AS name, MAX(len) AS maxlen
                 FROM {self._TABLE_SPEC_TABLE}
@@ -353,12 +380,22 @@ class TableDataHelper:
         for _, row in data_cols_not_present.iterrows():
             self._add_varchar_column(table_name, row['name'], row['maxlen'])
 
-        #and_not_in_json_tbl = data_cols_not_present[~data_cols_not_present['recordname'].isin(
-        #    self._json_tables)]
         return data_cols_not_present
     
   
     def load_table(self, table_filename, use_bulk_copy=True):
+        """Loads the specified table data CSV file to the corresponding database table.
+        
+        Ensure that you have called prepare_db_for_file for the corresponding table name 
+        first!
+        
+        The data will be packed and loaded as JSON if that is the format of the destination 
+        table. 
+
+        use_bulk_copy specifies that the data transfer should take place using the PostgreSQL 
+        COPY FROM function, which is generally much faster. If False then the data will be loaded 
+        using pandas.to_sql which uses SQL INSERTs.
+        """
         _, _, _, _, table_name = TableDataHelper.parse_table_name(table_filename)
         is_json = table_name in self._json_tables
         if is_json:
@@ -369,7 +406,7 @@ class TableDataHelper:
 
     def _load_file_to_standard_table(self, table_filename, use_bulk_copy=True):
         surveyid, _, file_type, _, table_name = TableDataHelper.parse_table_name(table_filename)
-        file_data = pd.read_csv(table_filename, dtype=str)#.fillna('')
+        file_data = pd.read_csv(table_filename, dtype=str) #.fillna('') # don't do this!
         file_data.columns = file_data.columns.str.lower()
         file_data['surveyid'] = surveyid
         if self._is_dry_run:
@@ -387,16 +424,21 @@ class TableDataHelper:
                     {self._DATA_SCHEMA}."{table_name}" using BULK COPY''')
                 buffer = io.StringIO()
                 file_data.to_csv(buffer, sep='\t', header=False, index=False)
+                # rewind the tape
                 buffer.seek(0)
                 qual_table = self._DATA_SCHEMA + '.' + '"' + table_name + '"'
                 conn = self._engine.raw_connection()
                 cursor = conn.cursor()
+                # note the null='' - this is necessary becasue the temporary CSV (TSV) format has no 
+                # true null, so need to tell the DB to use emptystring as null.
                 cursor.copy_from(buffer, qual_table, sep='\t', null='', columns=list(file_data.columns))
                 conn.commit()
                 cursor.close()
             else:
                 print(f'''Inserting data from {os.path.basename(table_filename)} to 
                     {self._DATA_SCHEMA}."{table_name}" using INSERTs''')
+                # Here, pandas will already have read emptystrings as null and will insert them 
+                # correctly as such.
                 file_data.to_sql(name=table_name, schema=self._DATA_SCHEMA,
                     con=self._engine, index=False, if_exists='append', method='multi')
 
@@ -415,7 +457,7 @@ class TableDataHelper:
         file_data.columns = file_data.columns.str.lower()
         file_data['surveyid'] = str(surveyid)
 
-        # convert all EXCEPT the columns with "id" in the name to a single JSON column
+        # convert all EXCEPT the columns divined as being indexes to a single JSON column
         # To do this, set the id columns to be the dataframe's index just to "hide" them 
         # from the to_dict conversion, then reset the index afterwards
         file_data.set_index([c for c in file_data.columns if self._col_shld_be_firstclass(c)], inplace=True)
