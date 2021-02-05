@@ -59,28 +59,12 @@ DHS also provide a range of aggregated summaries of things derived from surveys,
 
 Broadly the steps for each survey, implemented in this repository, are: 
 
-- Download and unzip the "hierarchical ASCII data" for all the surveys you wish.
-- For each download, parse the .DCF file. This is a [CSPro](https://www.census.gov/data/software/cspro.html) dictionary specification. It specifies the schema of the data table(s) included in the associated .DAT file
-- Load the parsed schema information to two metadata tables in the database
-- Use the parsed schema information to parse the .DAT (data) file into multiple .CSV files, one for each table ("recordtype") used in the survey
-- Load each data .CSV file into the correct table in the database, after adjusting the schema of the database table if necessary.
+- Identify the surveys which are available for download and which are not currently present in your database -> [01_Check_For_Survey_Updates.ipynb](DHS-DataExtraction/DHS_To_Database/01_Check_For_Survey_Updates.ipynb)
+- Download the "hierarchical ASCII data" from the DHS website for all the relevant surveys. This code will not do the downloading for you - DHS do not look kindly on web-scraping of their data. They provide a bulk download tool (see [here](https://dhsprogram.com/data/Access-Instructions.cfm#multiplesurveys)) and it is recommended that you use it; this code will take the URL list the DHS tool generates to assist with the parsing stage.
+- Download and unzip the "hierarchical ASCII data" for all the surveys you wish. -> [02_Unzip_Organise_Parse.ipynb](DHS-DataExtraction/DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
+- For each download, parse the .DCF file. This is a [CSPro](https://www.census.gov/data/software/cspro.html) dictionary specification. It specifies the schema of the data table(s) included in the associated .DAT file -> [02_Unzip_Organise_Parse.ipynb](DHS-DataExtraction/DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
+- Use the parsed schema information to parse the .DAT (data) file into multiple .CSV files, one for each table ("recordtype") used in the survey -> [02_Unzip_Organise_Parse.ipynb](DHS-DataExtraction/DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
+- Load the parsed schema information to two metadata tables in the database [03_DHS_Update_Metadata.ipynb](DHS-DataExtraction/DHS_To_Database/03_DHS_Update_Metadata.ipynb)
+- Load each data .CSV file into the correct table in the database, after adjusting the schema of the database table if necessary. [04_DHS_Load_New_Tables.ipynb](DHS-DataExtraction/DHS_To_Database/04_DHS_Load_New_Tables.ipynb)
 
 You can then query the database to create the custom extractions you want. Due to the presence of country-specific and other exceptions to the standard schemas, care is needed in construction of queries to ensure that columns referenced always mean what they ought to, and that all columns containing a particular piece of information are referenced. The metadata tables make this process much less arduous than it would otherwise be. Example queries are found in other repositories. 
-
-
-
-## Instructions
- 
-1. Identify which surveys need to be obtained, using [01_Check_For_Survey_Updates](./DHS_To_Database/01_Check_For_Survey_Updates.ipynb):
-    - Get list of surveys available according to the [DHS program API](https://api.dhsprogram.com/#/index.html) and compare to the contents of the local database
-    - Remove surveys with known issues (e.g. listed in the API but not actually available)
-    -  Provide the user with a listing of surveys they should download. There is no automated process for this, as DHS do not provide one and took steps to prevent an earlier web-scraping method from working. 
-2. Unzip the downloaded data files, organise them according to numerical survey ID, and parse the files, using [02_Unzip_Organise_Parse](./DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
-    - Data are extracted to subfolders numbered by numeric survey ID, and each file is also prepended with the numeric survey ID
-    - The 
-    - Extract schema information from the .DCF CSPro format data specification files, and save this information to CSV files (code under MetadataManagment)
-- 2. Read the schema specification CSV files and use these to parse the data (.DAT) files into individual tables (record types) which will be saved as CSVs. (Code under DataFileParsing).
-- 3. Create database tables for holding the data and load the CSVs into them (under General)
-
-For users in MAP, a full description of the processing can be found in the internal wiki.
-
