@@ -6,7 +6,7 @@ CSPro software is freely available and can be used to browse the data in an expl
  
 Within each survey, the questions are divided into "sections". These sections are what, in database terms, we would call "tables", whilst in CSPro itself they are (confusingly) called Records (or Recordtypes, or Record names).
 
-*(As described in the [readme](README.md), the Flat ASCII data contain a single table (or Record) with a very large number of columns. Don't use these! Use the Hierarchical ASCII Data.)*
+*(As described in the [readme](../../README.md), the Flat ASCII data contain a single table (or Record) with a very large number of columns. Don't use these! Use the Hierarchical ASCII Data.)*
 
 The questions themselves are called variables (within the DHS documentation) or "items" within the CSPro system, and are equivalent to columns/fields in database 
 terms.
@@ -203,7 +203,7 @@ Having the data all in a single database makes it *possible* to create extractio
 
 ## The database data tables
 
-Each survey table is loaded into a table in the database for each table type - for example, the "REC01" data for all surveys go into a single "REC01" table in the database. As described in the [readme](../README.md), the columns of those tables are subject to slight change over time between surveys. The core columns generally remain unchanged, but new columns are sometimes added and occasionally columns are dropped. 
+Each survey table is loaded into a table in the database for each table type - for example, the "REC01" data for all surveys go into a single "REC01" table in the database. As described in the [readme](../../README.md), the columns of those tables are subject to slight change over time between surveys. The core columns generally remain unchanged, but new columns are sometimes added and occasionally columns are dropped. 
 
 Therefore, for the "RECH1" table in the database to contain data from the RECH1 table of all DHS surveys, it needs to contain more columns than are necessarily present in any one survey, as the unioned set of all columns that are ever present in a table called "RECH1". Many columns will thus be NULL a lot of the time - the data are relatively "sparse".
 
