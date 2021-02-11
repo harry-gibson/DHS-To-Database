@@ -6,6 +6,9 @@ This repository contains python code for parsing and data from the [Demographic 
 
 This methodology and the code in this repository, and the associated reverse-engineering of the CSPro data format and the DHS survey schema, has been developed by Harry Gibson.
 
+The methods developed and presented here have been used to collate and prepare datasets underpinning numerous published studies. [Here](doc/bibliography.md) is a list of the main ones I am aware of.
+
+
 ## About the surveys
 
 The Demographic and Health Surveys (DHS) Program is a US-based and funded organisation that conducts surveys around the world and then makes those data available for research. Surveys are conducted around the developing world, from Afghanistan to Zimbabwe.
@@ -90,14 +93,14 @@ DHS also provide polygon datasets representing the "regions" used in the survey.
 
 Broadly the steps for each survey, implemented in this repository, are: 
 
-- Identify the surveys which are available for download and which are not currently present in your database -> [01_Check_For_Survey_Updates.ipynb](DHS_To_Database/01_Check_For_Survey_Updates.ipynb)
+- Identify the surveys which are available for download and which are not currently present in your database -> [01_Check_For_Survey_Updates.ipynb](01_Check_For_Survey_Updates.ipynb)
 - Download the "hierarchical ASCII data" from the DHS website for all the relevant surveys. This code will not do the downloading for you - DHS do not look kindly on web-scraping of their data. They provide a bulk download tool (see [here](https://dhsprogram.com/data/Access-Instructions.cfm#multiplesurveys)) and it is recommended that you use it; this code will take the URL list the DHS tool generates to assist with the parsing stage.
-- Download and unzip the "hierarchical ASCII data" for all the surveys you wish. -> [02_Unzip_Organise_Parse.ipynb](DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
-- For each download, parse the .DCF file. This is a [CSPro](https://www.census.gov/data/software/cspro.html) dictionary specification. It specifies the schema of the data table(s) included in the associated .DAT file -> [02_Unzip_Organise_Parse.ipynb](DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
-- Use the parsed schema information to parse the .DAT (data) file into multiple .CSV files, one for each table ("recordtype") used in the survey -> [02_Unzip_Organise_Parse.ipynb](DHS_To_Database/02_Unzip_Organise_Parse.ipynb)
-- Load the parsed schema information to two metadata tables in the database [03_DHS_Update_Metadata.ipynb](DHS_To_Database/03_DHS_Update_Metadata.ipynb)
-- Load each data .CSV file into the correct table in the database, after adjusting the schema of the database table if necessary. [04_DHS_Load_New_Tables.ipynb](DHS_To_Database/04_DHS_Load_New_Tables.ipynb)
+- Download and unzip the "hierarchical ASCII data" for all the surveys you wish. -> [02_Unzip_Organise_Parse.ipynb](02_Unzip_Organise_Parse.ipynb)
+- For each download, parse the .DCF file. This is a [CSPro](https://www.census.gov/data/software/cspro.html) dictionary specification. It specifies the schema of the data table(s) included in the associated .DAT file -> [02_Unzip_Organise_Parse.ipynb](02_Unzip_Organise_Parse.ipynb)
+- Use the parsed schema information to parse the .DAT (data) file into multiple .CSV files, one for each table ("recordtype") used in the survey -> [02_Unzip_Organise_Parse.ipynb](02_Unzip_Organise_Parse.ipynb)
+- Load the parsed schema information to two metadata tables in the database [03_DHS_Update_Metadata.ipynb](03_DHS_Update_Metadata.ipynb)
+- Load each data .CSV file into the correct table in the database, after adjusting the schema of the database table if necessary. [04_DHS_Load_New_Tables.ipynb](04_DHS_Load_New_Tables.ipynb)
 
-Slightly more complete usage information is in [Usage.md](/doc/usage.md)
+Slightly more complete usage information is in [Usage.md](/doc/Usage.md)
 
 Once the database is loaded, you can query it to create the custom extractions you want. Due to the presence of country-specific and other exceptions to the standard schemas, care is needed in construction of queries to ensure that columns referenced always mean what they ought to, and that all columns containing a particular piece of information are referenced. The metadata tables make this process much less arduous than it would otherwise be. Example queries are found in other repositories. 

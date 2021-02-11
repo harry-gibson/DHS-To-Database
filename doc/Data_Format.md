@@ -6,7 +6,7 @@ CSPro software is freely available and can be used to browse the data in an expl
  
 Within each survey, the questions are divided into "sections". These sections are what, in database terms, we would call "tables", whilst in CSPro itself they are (confusingly) called Records (or Recordtypes, or Record names).
 
-*(As described in the [readme](../../README.md), the Flat ASCII data contain a single table (or Record) with a very large number of columns. Don't use these! Use the Hierarchical ASCII Data.)*
+*(As described in the [readme](../README.md), the Flat ASCII data contain a single table (or Record) with a very large number of columns. Don't use these! Use the Hierarchical ASCII Data.)*
 
 The questions themselves are called variables (within the DHS documentation) or "items" within the CSPro system, and are equivalent to columns/fields in database 
 terms.
@@ -29,7 +29,7 @@ These "dictionary specification" files are plain text files which describe the s
 
 In terms of what we are interested in, they contain the schema for every table: the name of the table, the description of the table; the name and description of each column within the table; how to parse each column from the fixed-width data lines; the values each column can take; and the descriptions associated with those values.
 
-The files are read and parsed sequentially in blocks. Each block begins with a line containing an item in [square brackets] and ends with a blank line. They are effectively a nested description of each table ("Record"), each column ("item") within that table, and each value that item can have. When we encounter a "Record" block, the following "Item" blocks all describe columns for that table, until we encounter anothe "Record" block. 
+The files are read and parsed sequentially in blocks. Each block begins with a line containing an item in [square brackets] and ends with a blank line. The blocks occur in sequences that are effectively a nested description of each table ("Record"), each column ("item") within that table, and each value that item can have. When we encounter a "Record" block, the following "Item" blocks all describe columns for that table, until we encounter another "Record" block. 
 
 Thus the following fragment of a .DCF file:
 
@@ -122,7 +122,7 @@ Value=9;Other
 <Globals>
     <RecordTypeLocation StartPos="16" Len="3"/>
 </Globals>
-<TableGroup Label="HOUSEHOLD" IdentifierStartPos="1" IdentifierLen="12">
+<TableGroup Label="HOUSEHOLD" IdentifierStartPos="1" IdentifierLen="12" IdentifierName="HHID">
     <Record Name="RECH0" Label="Household's basic data" Codename="H00" TotalLineLength="172">
         <Item Name="HV000" Label="Country code and phase" StartPos="19" Length="3"/>
         <Item Name="HV001" Label="Cluster number" StartPos="22" Length="6"/>
@@ -146,20 +146,27 @@ Value=9;Other
 </TableGroup>
 ```
 
-In this example, every line in the data file contains a 3-character identifier in character position 16-18 which defines the table the line belongs to; this is constant across the whole file.
+In this example: 
+- Every line in the data file contains a 3-character identifier in character position 16-18 which defines the table the line belongs to; this is constant across the whole file.
+- Any table defined as being part of the "HOUSEHOLD" group contains an identifier in character position 1-12; the column name of this identifier is `HHID`.
+  - **Note** that this leaves three blank characters in positions 13-15 for these lines. Other tables in the file that are part of the individual level group has a longer, 15-character identifier, and since the position of the record type identifier is constant at 16-18 the blank characters are necessary).
+  - Because the HHID may not be as long as 12 characters, it may also be space-padded within its 12 character "slot".  Because of the need to match with the longer CASEIDs this needs carefil handling
+  - For example consider a HHID of `1.0.10`, using dots instead of spaces for clarity here. The 12 characters stored in the data may then be `..1.0.10....` or `......1.0.10` or even `1.0.10......`
+  - Meanwhile later in the file (not shown in this example) a woman living in this household would be identified with a CASEID consisting of the HHID plus three further character spaces, some of which may also be blank  such as `..1.0.10....2..` or `..1.0.10......2`
+  - Therefore to reconstruct HHID from CASEID we simply remove the last three characters, treating spaces like any other character. 
+  - It is therefore crucial that we DO NOT strip leading or trailing spaces from HHID and CASEID variables but store them exactly as they occur in the datafiles.
 
-Any table defined as being part of the "HOUSEHOLD" group contains an identifier in character position 1-12; the column name of this identifier is `HHID`.
-
-(Note that this leaves three blank characters in positions 13-15 for these lines. Other tables in the file that are part of the individual level group has a longer, 15-character identifier, and since the position of the record type identifier is constant at 16-18 the blank characters are necessary).
-
-Next we define a part of the table `"RECH0"`. The table contains information relating to "Household's basic data". Rows in the .DAT file that are destined for this table will have the identifier (in position 16-18) `"H00"` and will be 172 characters long in total.
+- Next we define a part of the table `"RECH0"`. The table contains information relating to "Household's basic data". Rows in the .DAT file that are destined for this table will have the identifier (in position 16-18) `"H00"` and will be 172 characters long in total.
 
 Here we define 4 columns of that table. 
 - Column `HV000` contains the answer to the question "Country code and phase" and the data for this column can be found in characters 19-21 of a line in the .DAT file that corresponds to this table. The values can be anything.
  
-- Column `HV001` contains the answer to the question "Cluster number" and the data for this questino can be found in characters 
+- Column `HV001` contains the answer to the question "Cluster number" and the data for this question can be found in characters 22-27. 
+  - NB where the actual cluster number is shorter than 6 characters (which it normally, if not always, will be), the value is padded with spaces (on either or both sides). 
+  - It is crucial that this value SHOULD have the padding stripped away on parsing in case the same clusterid is stored differently within its padded field in different tables (such as `V001` in `REC01`).  This is true for all data fields, and is the opposite to how HHID/CASEID should be treated.
 - Column `HV006` contains the answer to the question "Month of interview" and can be an integer value from 1-12, with no further definition of the meaning of those self-explanatory values
 - Column `HV015` contains the answer to the question "Result of household interview" and can be an integer value from 1-9, each of which codes for a description as given.
+
 
 ### Processing of the format
 
@@ -168,6 +175,7 @@ In stage 02, we process the .DCF file into a "FlatRecordSpec" and a "FlatValuesS
 The FlatRecordSpec contains one row for each Item defined in the .DCF, recording the table name ("Recordname"); the column name ("name"); the narrative description ("Label") - which corresponds to the question text in the survey - ; the start position; and the length, of the data item in the fixed-width data file. A further column also contains the numeric identifier of the survey.
 
 The FlatValuesSpec file contains one row for each legal value of each Item defined in the DCF, containing the column name it relates to, the value, and the description of this value. This is because, as well as integer ranges such as month number as illustrated above, other columns contain coded values e.g. a value of 2 in a particular survey/table/column might correspond to the name of a particular antimalarial drug that was taken. A further column also contains the numeric identifier of the survey.
+
 
 ## The .DAT format
         
@@ -203,7 +211,7 @@ Having the data all in a single database makes it *possible* to create extractio
 
 ## The database data tables
 
-Each survey table is loaded into a table in the database for each table type - for example, the "REC01" data for all surveys go into a single "REC01" table in the database. As described in the [readme](../../README.md), the columns of those tables are subject to slight change over time between surveys. The core columns generally remain unchanged, but new columns are sometimes added and occasionally columns are dropped. 
+Each survey table is loaded into a table in the database for each table type - for example, the "REC01" data for all surveys go into a single "REC01" table in the database. As described in the [readme](../README.md), the columns of those tables are subject to slight change over time between surveys. The core columns generally remain unchanged, but new columns are sometimes added and occasionally columns are dropped. 
 
 Therefore, for the "RECH1" table in the database to contain data from the RECH1 table of all DHS surveys, it needs to contain more columns than are necessarily present in any one survey, as the unioned set of all columns that are ever present in a table called "RECH1". Many columns will thus be NULL a lot of the time - the data are relatively "sparse".
 
