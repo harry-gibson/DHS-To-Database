@@ -91,8 +91,8 @@ class TableDataHelper:
         As throughout this software, all columns are created with VARCHAR(n) type where n = the 
         maximum width currently specified for that table/column in any survey
         
-        (I don't know if there's actually any good reason for not just using VARCHAR (no width) columns,
-        which would certainly avoid a bit of faff. )
+        NB there's no great reason for not just using VARCHAR (no width) columns,
+        which would certainly avoid a bit of faff, but risks excessively long values being accidentally loaded. Bear in mind that some of the joins are based on fixed-width data, which can include blank padding, so don't use a CHAR(N) type which adds its own blank padding: the data must be stored exactly as presented in the CSVs.
 
         The exception if there are more than TableDataHelper._MAX_COLUMN_THRESHOLD columns 
         specified in the metadata, in which case only columns believed to be indexes will be 
@@ -123,7 +123,7 @@ class TableDataHelper:
 
     def _col_shld_be_firstclass(self, col_name):
         """Attempts to divine whether a given column name is likely to be used in 
-        filtering/joining a table, and thus should be indexed, and/or left as a first-class
+        filtering/joining a table, and thus should be indexed, and/or kept as a first-class
         column in a JSON table."""
         _c = col_name.lower()
         if (("idx" in _c) or (_c.startswith("ix")) 
@@ -132,7 +132,7 @@ class TableDataHelper:
             # TODO maybe it'd be nicer to check label as well, has to say "index"
             #  or "line number" e.g. 'idx94', 'ixh4', 'surveyid','caseid','mcaseid','hhid',
             # but not e.g. 'shidioma'. This would allow us to pick up edge cases like 
-            # REC21.B16
+            # REC21.B16, RECH1.HV112.
             return True
         return False
 
@@ -303,7 +303,7 @@ class TableDataHelper:
         # Because this does an INNER join to information_schema.columns, columns that 
         # are specified in the spec table but which have been stored packed in a JSON table
         # are simply not returned by this query, which is what we need, so that we won't 
-        # attemptt to widen or check the width of a column that doesn't exist (because it's 
+        # attempt to widen or check the width of a column that doesn't exist (because it's 
         # in the JSON)
         length_specs = pd.read_sql(f"""
             SELECT 
