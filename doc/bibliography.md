@@ -20,6 +20,12 @@ A selection of papers follows that have been directly enabled or supported by th
 
 [Environmental temperature and growth faltering in African children: a cross-sectional study](https://doi.org/10.1016/s2542-5196(20)30037-1); Tusting et al., *Lancet Planetary Health*, 2020
 
+[Indoor residual spraying for malaria control
+in sub-Saharan Africa 1997 to 2017: an adjusted
+retrospective analysis](https://doi.org/10.1186/s12936-020-03216-6); Tangena et al., *Malaria Journal*, 2020
+
+[Global maps of travel time to healthcare facilities](https://doi.org/10.1038/s41591-020-1059-1); Weiss et al., *Nature Medicine*, 2020 (extended analysis)
+
 <!--[Global estimation of anti-malarial drug effectiveness for the treatment of uncomplicated Plasmodium falciparum malaria 1991–2019](https://doi.org/10.1186/s12936-020-03446-8); Rathmes et al., *Malaria Journal*, 2020--> <!--await Rumisha paper-->
 
 <!--TBD - Bertozzi nets paper when published? -->
