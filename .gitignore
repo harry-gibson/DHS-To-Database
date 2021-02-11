@@ -219,6 +219,8 @@ pip-log.txt
 .ipynb_checkpoints/
  
 dhs_env/
+.fme/
+.data/
 
 #FME
 *.log

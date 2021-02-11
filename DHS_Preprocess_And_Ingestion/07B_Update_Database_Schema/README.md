@@ -1,1 +1,0 @@
-This folder contains two workbenches to update the schema of the main data tables in the DHS database to match what is specified by the metadata tables: i.e. which columns should be present and how wide they should be (in varchar(n)) format. Once the metadata have been loaded (step 07A) these two workbenches should be run next.
