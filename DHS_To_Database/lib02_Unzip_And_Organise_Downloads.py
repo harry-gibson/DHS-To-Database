@@ -2,8 +2,8 @@ import os
 import zipfile
 import re, fnmatch
 
-from cspro_parser.DCF_Parser import DCF_Parser
-from cspro_parser.DAT_Parser import parse_dat_file
+from .cspro_parser.DCF_Parser import DCF_Parser
+from .cspro_parser.DAT_Parser import parse_dat_file
 
 def unzip_and_sort(zip_path, survey_num, out_folder):
     """Extracts the root contents of the zipfile zip_path to a folder out_folder/survey_num, prepending
