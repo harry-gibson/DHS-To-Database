@@ -1,3 +1,0 @@
-This file contains an experimental workbench for extracting subnational (i.e. regional) data from the online DHS API, which provides a large number of indicators at this level.
-
-The workbench as configured retrieves all data for the "children with fever" indicator, from the entire DHS database, and writes the information to a KML file (which will be enormous, so this approach needs changing), and to a CSV file.

@@ -1,10 +1,24 @@
+# CSPro .DAT fixed-width text datafile parser
+# For use with DHS hierarchical data
+# Harry Gibson 2015-2021
+
 import os
 from operator import itemgetter
-#import codecs
 import csv
 from chardet.universaldetector import UniversalDetector
 
 def parse_dat_file(dat_path, spec_csv_path, out_folder):
+    """Parse a .DAT file (CSPro fixed-width text datafile) into a series of CSV files 
+    containing the tabular data for each table contained in the .DAT and described in the 
+    associated .DCD file. 
+    
+    Developed for use in particular with DAT files provided in the "hierarchical data"
+    from DHS, but may be more generally applicable to CSPro format files. The .DCF file 
+    must be parsed first, using DCF_Parser, and the table specification file it 
+    generates is used by this function to parse the data file.
+    
+    Produces one CSV data file for every table (recordtype) defined in the .DCF and occurring in 
+    the .DAT. """
     filecode = os.path.extsep.join(os.path.basename(dat_path).split(os.path.extsep)[:-1])
 
     # See if we've already done this one
@@ -71,7 +85,10 @@ def parse_dat_file(dat_path, spec_csv_path, out_folder):
 
             # The .DAT format allows a fixed width for each column of each recordtype.
             # Should we strip the whitespace on shorter values? This is difficult.
-            # In general, yes we should but NOT in the case of the CASEID / HHID variables.
+            # In general, yes we should, because values are stored as fixed-width and where 
+            # shorter than the field, are padded with spaces, which would take up unnecessary space 
+            # and would prevent joining/comparison between surveys. 
+            # HOWEVER in the case of the CASEID / HHID variables we must NOT strip the whitespace. 
             # The HHID is usually the CASEID with the last 3 chars trimmed off, but if we
             # trim "some" whitespace from HHID here then we can break that association and
             # damage referential integrity.

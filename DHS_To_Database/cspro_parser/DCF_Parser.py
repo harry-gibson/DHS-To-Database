@@ -1,6 +1,6 @@
- # CSPro .DCF dictionary specification parser
+# CSPro .DCF dictionary specification parser
 # For use with DHS hierarchical data
-# Harry Gibson 2015-2020
+# Harry Gibson 2015-2021
 
 from collections import defaultdict
 from chardet.universaldetector import UniversalDetector

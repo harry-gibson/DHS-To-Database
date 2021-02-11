@@ -1,1 +1,0 @@
-This folder contains an FME workbench Load_Value_Specs_To_DB.fmw, to load parsed survey metadata (from stage 05) to the staging database, dropping any existing metadata for the survey first. A second workbench simply dumps an up-to-date list of surveys from the API into the staging database.
