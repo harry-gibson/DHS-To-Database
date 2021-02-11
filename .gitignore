@@ -221,6 +221,9 @@ pip-log.txt
 dhs_env/
 .fme/
 .data/
+config/ 
+
+.idea/
 
 #FME
 *.log
