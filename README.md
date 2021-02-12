@@ -34,9 +34,8 @@ Hopefully it's now clear where we're going with this. The "Hierarchical ASCII da
 We parse the datafiles into standalone CSV format tables, and then load those tables to a PostgreSQL database. From there we can, with care and acknowledgement of limitations, write SQL queries to interrogate the whole database at once and thus extract cross-sectional data across the whole body of DHS surveys.
 
 All of the other downloadable data formats ("Child Recode", "Household Recode", etc) are extractions from this relational data structure that could theoretically be reproduced using an SQL query from the database that is maintained using this code.
-
 <br/>
---------------------------------
+
 # Summary of Usage
 --------------------------------
 
@@ -53,9 +52,8 @@ Broadly the steps for each survey, implemented in this repository, are:
 Slightly more complete usage information is in [Usage.md](/doc/Usage.md)
 
 Once the database is loaded, you can query it to create the custom extractions you want. Due to the presence of country-specific and other exceptions to the standard schemas, care is needed in construction of queries to ensure that columns referenced always mean what they ought to, and that all columns containing a particular piece of information are referenced. The metadata tables make this process much less arduous than it would otherwise be. Example queries are found in other repositories. 
-
 <br/>
---------------------------------
+
 # Further information
 --------------------------------
 
