@@ -22,7 +22,7 @@ The DHS data are available (to registered users) in their (mostly) standardised 
 
 I believe that this is what gives rise to a common misconception that there are separate "household" and "child" **surveys**. This isn't correct. These files are all from the **same survey** and all contain different subsets of the **same data**. They have merely been pre-processed into wide, flat tables/spreadsheets to "aid" analysis. For example the Children's Recode contains one single table, with one row per child (under 5) and almost 1200 columns (!). All columns relating directly to that child are present, along with a selected subset of maybe-relevant data at other levels such as the type of house they live in, how many other children the mother has had, etc. 
 
-The (**vital**) exception to this set of downloadable files is the listing for "Hierarchical ASCII data" which appears under "Individual Recode". This dataset contains *all* the data about children, women, and households, in a section-by-section, table-by-table format. (Information about men, if gathered, is the exception; it is in a second hierarchical ASCII data listing under Men's Recode.)
+The (**vital**) exception to this set of downloadable files is the listing for "Hierarchical ASCII data", which (misleadingly!) appears under "Individual Recode". This dataset contains *all* the data about children, women, and households, in a section-by-section, table-by-table format. (Information about men, if gathered, is the exception; it is in a second hierarchical ASCII data listing under Men's Recode.)
 
 
 ## What is this code for?
@@ -31,7 +31,7 @@ Hopefully it's now clear where we're going with this. The "Hierarchical ASCII da
 
 **This repository, then, contains ETL code for working with these "Hierarchical ASCII data" downloads.** 
 
-We parse the datafiles into standalone CSV format tables, and then load those tables to a PostgreSQL database. From there we can, with care and acknowledgement of limitations, write SQL queries to interrogate the whole database at once and thus extract cross-sectional data across the whole body of DHS surveys.
+We parse the datafiles into standalone CSV format tables, based on the analysis of the CSPro file format [here](doc/Data_Format.md), and then load those tables to a PostgreSQL database. From there we can, with care and acknowledgement of limitations, write SQL queries to interrogate the whole database at once and thus extract cross-sectional data across the whole body of DHS surveys.
 
 All of the other downloadable data formats ("Child Recode", "Household Recode", etc) are extractions from this relational data structure that could theoretically be reproduced using an SQL query from the database that is maintained using this code.
 <br/>
@@ -59,7 +59,9 @@ Once the database is loaded, you can query it to create the custom extractions y
 
 ## Survey structure - relational model
 
-As mentioned above, data in the "hierarchical ASCII data" downloads contain the full relational table structure (divided across two files, one containing data for men and the other containing data for all other levels of respondent). A summary of how this schema is laid out is given below:
+As mentioned above, data in the "hierarchical ASCII data" downloads contain the full relational table structure (divided across two files, one containing data for men and the other containing data for all other levels of respondent). [This file](doc/Data_Format.md) describes the details of the data format.
+
+A summary of how the DHS survey schema is laid out in the hierarchical files is given below:
 
 <details>
   <summary>Structure of the surveys</summary>
