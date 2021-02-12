@@ -1,0 +1,3 @@
+chardet==3.0.4
+pandas==1.1.4
+SQLAlchemy==1.3.22
