@@ -2,7 +2,7 @@ DHS hierarchical data extraction
 ---------------------------------------
 
 
-This repository contains python code for parsing and data from the [Demographic and Health Surveys](https://dhsprogram.com) (DHS) Program into a relational database format, enabling large-scale cross sectional analyses of multiple surveys.
+This repository contains python code for parsing and data from the [Demographic and Health Surveys](https://dhsprogram.com) (DHS) Program into a relational database format, enabling large-scale pooled and/or cross sectional analyses of multiple surveys in a way that is both reproducible and repeatable.
 
 This methodology and the code in this repository, and the associated reverse-engineering of the CSPro data format and the DHS survey schema, has been developed by Harry Gibson.
 
@@ -35,12 +35,22 @@ As mentioned above, each table (and the questions therein) relates to a particul
 - Child (tables contain one row per child who is aged under 5 and is the offspring of a woman respondent)
 - Man respondent (tables contain one row per individual man personally responding to the survey)
 
+### What this approach enables 
+
 Key to the analyses that are made possible by this code is that responses from the different sections can (normally) be referenced to each other: e.g. the identifier for women's responses contains a reference to the identifier of the household they are in, and a reference to the same woman's information in the household-member tables. 
 
-Thus we can construct queries that JOIN the data from the tables in these different survey sections. For example to create a dataset at household level that summarises the number of children in the household who have/have not been vaccinated; or a dataset at child level that contains information on the household's sanitation arrangements. Not only can we do this for a single survey, but we can create these datasets spanning across many surveys at once - this is subject to limitations discussed below.
+Thus we can construct queries that JOIN the data from the tables in these different survey sections. For example to create a dataset at household level that summarises the number of children in the household who have/have not been vaccinated; or a dataset at child level that contains information on the household's sanitation arrangements. 
+
+Not only can we produce combined dataset extractions like this for a single survey, but we can create these datasets spanning across many surveys at once - this is subject to limitations discussed below.
+
+## The point of this approach
+
+Whilst such datasets can certainly be produced from the various downloadable DHS datasets by other, largely manual means, this tends to take a great deal of time, careful manual manipulation of huge (thousands of column) spreadsheets/dataframes, and is generally fraught with difficulty and prone to hard-to-detect errors.
+
+Here, by contrast, because the ultimate mechanism for creating a particular extracted dataset is simply an SQL query, the process is repeatable, reproducible, and can be documented and made subject to source control.  Queries are fast to run and a large, complex extraction spanning the entire DHS survey database can typically be executed in a few minutes. Thus, additions and alterations to the extracted schema can be made quickly, and traceably, as a study develops.
 
 
-## Inter-survey consistency 
+## Limitation: Inter-survey consistency 
 
 All DHS surveys are conducted based on a common framework of questions from which a given survey will take a subset. This framework has changed at various times over the years (giving a change in the core set of questions); these changes are termed "phases" by DHS. At present we are in phase 8. 
 
