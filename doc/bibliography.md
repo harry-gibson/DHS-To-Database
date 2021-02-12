@@ -12,7 +12,7 @@ This has directly enabled and led to numerous published high-impact papers,  in 
 - Extracting malaria prevalence rate ("PR") data in a consistent format across all surveys for which it is collected
 - Extracting data on availability and usage of insecticide-treated bednets (ITNs) across all surveys for which it is collected
  
-A selection of papers follows that have been directly enabled or supported by the code and methods developed in this repository:
+A selection of papers follows that have been directly enabled or significantly supported by the code and methods developed in this repository:
 
 [Indirect effects of the COVID-19 pandemic on malaria intervention coverage, morbidity, and mortality in Africa: a geospatial modelling analysis](https://doi.org/10.1016/s1473-3099(20)30700-3); Weiss et al., *Lancet Infectious Diseases*, 2021
 
