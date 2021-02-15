@@ -51,7 +51,7 @@ Broadly the steps for each survey, implemented in this repository, are:
 
 Slightly more complete usage information is in [Usage.md](/doc/Usage.md)
 
-Once the database is loaded, you can query it to create the custom extractions you want. Due to the presence of country-specific and other exceptions to the standard schemas, care is needed in construction of queries to ensure that columns referenced always mean what they ought to, and that all columns containing a particular piece of information are referenced. The metadata tables make this process much less arduous than it would otherwise be. Example queries are found in other repositories. 
+Once the database is loaded, you can query it to create the custom extractions you want. Due to the presence of country-specific and other exceptions to the standard schemas, care is needed in construction of queries to ensure that columns referenced always mean what they ought to, and that all columns containing a particular piece of information are referenced. The metadata tables make this process much less arduous than it would otherwise be. Example queries are found in [this repository](https://github.com/harry-gibson/DHS-Data-Extractions). 
 <br/>
 
 # Further information
@@ -146,3 +146,6 @@ DHS also provide a range of aggregated summaries of things derived from surveys,
 
 DHS also provide polygon datasets representing the "regions" used in the survey. These often correspond to Admin-1 units for the country in question; the actual boundaries can be downloaded from the DHS [Spatial Data Repository](https://spatialdata.dhsprogram.com/boundaries/). The polygon regions can be linked with the survey data via a region ID variable.
 
+## Examples of usage
+
+Once the database has been populated, the next step is of course to use it to extract the datasets of interest! Several examples of proejcts where I have done this are found in [this repository](https://github.com/harry-gibson/DHS-Data-Extractions).
