@@ -41,7 +41,7 @@ retrospective analysis](https://doi.org/10.1186/s12936-020-03216-6); Tangena et 
 
 [Spatio-temporal mapping of Madagascar's Malaria Indicator Survey results to assess Plasmodium falciparum endemicity trends between 2011 and 2016](https://doi.org/10.1186/s12916-018-1060-4); Kang et al., *BMC Medicine*, 2018
 
-[Population coverage of artemisinin-based combination treatment in children younger than 5 years with fever and Plasmodium falciparum infection in Africa, 2003–2015: a modelling study using data from national surveys](https://ezproxy-prd.bodleian.ox.ac.uk:2102/10.1016/S2214-109X(17)30076-1); Bennett et al., *Lancet Planetary Health*, 2017
+[Population coverage of artemisinin-based combination treatment in children younger than 5 years with fever and Plasmodium falciparum infection in Africa, 2003–2015: a modelling study using data from national surveys](https://doi.org/10.1016/S2214-109X(17)30076-1); Bennett et al., *Lancet Planetary Health*, 2017
 
 [Housing Improvements and Malaria Risk in Sub-Saharan Africa: A Multi-Country Analysis of Survey Data](https://doi.org/10.1371/journal.pmed.1002234); Tusting et al., *PLoS Medicine*, 2017
 
