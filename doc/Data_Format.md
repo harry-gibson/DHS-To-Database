@@ -150,7 +150,7 @@ In this example:
 - Every line in the data file contains a 3-character identifier in character position 16-18 which defines the table the line belongs to; this is constant across the whole file.
 - Any table defined as being part of the "HOUSEHOLD" group contains an identifier in character position 1-12; the column name of this identifier is `HHID`.
   - **Note** that this leaves three blank characters in positions 13-15 for these lines. Other tables in the file that are part of the individual level group has a longer, 15-character identifier, and since the position of the record type identifier is constant at 16-18 the blank characters are necessary).
-  - Because the HHID may not be as long as 12 characters, it may also be space-padded within its 12 character "slot".  Because of the need to match with the longer CASEIDs this needs carefil handling
+  - Because the HHID may not be as long as 12 characters, it may also be space-padded within its 12 character "slot".  Because of the need to match with the longer CASEIDs this needs careful handling
   - For example consider a HHID of `1.0.10`, using dots instead of spaces for clarity here. The 12 characters stored in the data may then be `..1.0.10....` or `......1.0.10` or even `1.0.10......`
   - Meanwhile later in the file (not shown in this example) a woman living in this household would be identified with a CASEID consisting of the HHID plus three further character spaces, some of which may also be blank  such as `..1.0.10....2..` or `..1.0.10......2`
   - Therefore to reconstruct HHID from CASEID we simply remove the last three characters, treating spaces like any other character. 
