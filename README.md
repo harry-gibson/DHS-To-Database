@@ -148,4 +148,4 @@ DHS also provide polygon datasets representing the "regions" used in the survey.
 
 ## Examples of usage
 
-Once the database has been populated, the next step is of course to use it to extract the datasets of interest! Several examples of proejcts where I have done this are found in [this repository](https://github.com/harry-gibson/DHS-Data-Extractions).
+Once the database has been populated, the next step is of course to use it to extract the datasets of interest! Several examples of projects where I have done this are found in [this repository](https://github.com/harry-gibson/DHS-Data-Extractions).
